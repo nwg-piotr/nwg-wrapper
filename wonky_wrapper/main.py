@@ -6,6 +6,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 import argparse
 import sys
+import os
 
 import gi
 
@@ -14,8 +15,6 @@ gi.require_version('Gtk', '3.0')
 try:
     gi.require_version('GtkLayerShell', '0.1')
 except ValueError:
-    import sys
-
     raise RuntimeError('\n\n' +
                        'If you haven\'t installed GTK Layer Shell, you need to point Python to the\n' +
                        'library by setting GI_TYPELIB_PATH and LD_LIBRARY_PATH to <build-dir>/src/.\n' +
@@ -25,13 +24,35 @@ except ValueError:
 from gi.repository import Gtk, GtkLayerShell
 
 
+def get_config_dir():
+    """
+    Determine config dir path, create if not found, then create sub-dirs
+    :return: config dir path
+    """
+    xdg_config_home = os.getenv('XDG_CONFIG_HOME')
+    config_home = xdg_config_home if xdg_config_home else os.path.join(os.getenv("HOME"), ".config")
+    config_dir = os.path.join(config_home, "wonky-wrapper")
+    if not os.path.isdir(config_dir):
+        print("Creating '{}'".format(config_dir))
+        os.mkdir(config_dir)
+
+
 def main():
+    get_config_dir()
     parser = argparse.ArgumentParser()
-    parser.add_argument("-s",
-                        "--script",
-                        type=str,
-                        default="",
-                        help="Path to the script whose output you want to display")
+
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-s",
+                       "--script",
+                       type=str,
+                       default="",
+                       help="Path to the script whose output you want to display")
+
+    group.add_argument("-t",
+                       "--text",
+                       type=str,
+                       default="",
+                       help="Path to the text file you want to display")
 
     parser.add_argument("-c",
                         "--css",
@@ -48,11 +69,11 @@ def main():
     parser.add_argument("-p",
                         "--position",
                         type=str,
-                        help="Position: \"bottom\", \"top\", \"left\" or \"right\"; \"center\" if no value given")
+                        help="Position: \"left\" or \"right\"; \"center\" if no value given")
 
     parser.add_argument("-f",
-                        "--fullscreen",
-                        type=bool,
+                        "--full",
+                        action="store_true",
                         help="Take full window width/height")
 
     parser.add_argument("-a",
@@ -87,20 +108,10 @@ def main():
     args = parser.parse_args()
 
     window = Gtk.Window()
-    label = Gtk.Label(label='GTK Layer Shell with Python!')
-    window.add(label)
 
     GtkLayerShell.init_for_window(window)
     GtkLayerShell.set_layer(window, GtkLayerShell.Layer.BOTTOM)
-
-    if args.position == "bottom" or args.position == "top":
-        if args.position == "bottom":
-            GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.BOTTOM, True)
-        else:
-            GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.TOP, True)
-
-        GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.LEFT, args.fullscreen)
-        GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.RIGHT, args.fullscreen)
+    GtkLayerShell.set_exclusive_zone(window, -1)
 
     if args.position == "left" or args.position == "right":
         if args.position == "left":
@@ -108,13 +119,28 @@ def main():
         else:
             GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.RIGHT, True)
 
-        GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.TOP, args.fullscreen)
-        GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.BOTTOM, args.fullscreen)
+    if args.full:
+        GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.TOP, True)
+        GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.BOTTOM, True)
 
     GtkLayerShell.set_margin(window, GtkLayerShell.Edge.TOP, args.margin_top)
     GtkLayerShell.set_margin(window, GtkLayerShell.Edge.BOTTOM, args.margin_bottom)
     GtkLayerShell.set_margin(window, GtkLayerShell.Edge.LEFT, args.margin_left)
     GtkLayerShell.set_margin(window, GtkLayerShell.Edge.RIGHT, args.margin_right)
+
+    outer_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+    window.add(outer_box)
+
+    inner_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
+    if args.alignment == "start":
+        outer_box.pack_start(inner_box, False, True, 0)
+    elif args.alignment == "end":
+        outer_box.pack_end(inner_box, False, True, 0)
+    else:
+        outer_box.pack_start(inner_box, True, False, 0)
+
+    label = Gtk.Label(label='GTK Layer Shell with Python!')
+    inner_box.pack_start(label, False, False, 0)
 
     window.show_all()
     window.connect('destroy', Gtk.main_quit)
