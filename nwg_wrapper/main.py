@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 '''This entire file is licensed under MIT.
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
@@ -9,9 +11,7 @@ import sys
 import os
 
 import gi
-
 gi.require_version('Gtk', '3.0')
-
 try:
     gi.require_version('GtkLayerShell', '0.1')
 except ValueError:
@@ -23,22 +23,16 @@ except ValueError:
 
 from gi.repository import Gtk, GtkLayerShell
 
+from nwg_wrapper.tools import get_config_dir, copy_files
 
-def get_config_dir():
-    """
-    Determine config dir path, create if not found, then create sub-dirs
-    :return: config dir path
-    """
-    xdg_config_home = os.getenv('XDG_CONFIG_HOME')
-    config_home = xdg_config_home if xdg_config_home else os.path.join(os.getenv("HOME"), ".config")
-    config_dir = os.path.join(config_home, "wonky-wrapper")
-    if not os.path.isdir(config_dir):
-        print("Creating '{}'".format(config_dir))
-        os.mkdir(config_dir)
+dir_name = os.path.dirname(__file__)
 
 
 def main():
-    get_config_dir()
+    config_dir = get_config_dir()
+    print(config_dir)
+    copy_files(os.path.join(dir_name, "config"), config_dir)
+
     parser = argparse.ArgumentParser()
 
     group = parser.add_mutually_exclusive_group()
@@ -74,7 +68,7 @@ def main():
     parser.add_argument("-f",
                         "--full",
                         action="store_true",
-                        help="Take full window width/height")
+                        help="Take full window height")
 
     parser.add_argument("-a",
                         "--alignment",
@@ -144,6 +138,7 @@ def main():
 
     window.show_all()
     window.connect('destroy', Gtk.main_quit)
+
     Gtk.main()
 
 
