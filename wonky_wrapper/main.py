@@ -63,21 +63,25 @@ def main():
     parser.add_argument("-mt",
                         "--margin_top",
                         type=int,
+                        default=0,
                         help="Top margin")
 
     parser.add_argument("-mb",
                         "--margin_bottom",
                         type=int,
+                        default=0,
                         help="Bottom margin")
 
     parser.add_argument("-ml",
                         "--margin_left",
                         type=int,
+                        default=0,
                         help="Left margin")
 
     parser.add_argument("-mr",
                         "--margin_right",
                         type=int,
+                        default=0,
                         help="Right margin")
 
     args = parser.parse_args()
@@ -88,9 +92,29 @@ def main():
 
     GtkLayerShell.init_for_window(window)
     GtkLayerShell.set_layer(window, GtkLayerShell.Layer.BOTTOM)
-    GtkLayerShell.set_margin(window, GtkLayerShell.Edge.TOP, 10)
-    GtkLayerShell.set_margin(window, GtkLayerShell.Edge.BOTTOM, 50)
-    GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.BOTTOM, 1)
+
+    if args.position == "bottom" or args.position == "top":
+        if args.position == "bottom":
+            GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.BOTTOM, True)
+        else:
+            GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.TOP, True)
+
+        GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.LEFT, args.fullscreen)
+        GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.RIGHT, args.fullscreen)
+
+    if args.position == "left" or args.position == "right":
+        if args.position == "left":
+            GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.LEFT, True)
+        else:
+            GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.RIGHT, True)
+
+        GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.TOP, args.fullscreen)
+        GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.BOTTOM, args.fullscreen)
+
+    GtkLayerShell.set_margin(window, GtkLayerShell.Edge.TOP, args.margin_top)
+    GtkLayerShell.set_margin(window, GtkLayerShell.Edge.BOTTOM, args.margin_bottom)
+    GtkLayerShell.set_margin(window, GtkLayerShell.Edge.LEFT, args.margin_left)
+    GtkLayerShell.set_margin(window, GtkLayerShell.Edge.RIGHT, args.margin_right)
 
     window.show_all()
     window.connect('destroy', Gtk.main_quit)
