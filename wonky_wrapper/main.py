@@ -31,7 +31,7 @@ def main():
                         "--script",
                         type=str,
                         default="",
-                        help="Path to the script")
+                        help="Path to the script whose output you want to display")
 
     parser.add_argument("-c",
                         "--css",
@@ -59,6 +59,26 @@ def main():
                         "--alignment",
                         type=str,
                         help="Alignment in full width/height: \"start\" or \"end\"; \"middle\" if no value given")
+
+    parser.add_argument("-mt",
+                        "--margin_top",
+                        type=int,
+                        help="Top margin")
+
+    parser.add_argument("-mb",
+                        "--margin_bottom",
+                        type=int,
+                        help="Bottom margin")
+
+    parser.add_argument("-ml",
+                        "--margin_left",
+                        type=int,
+                        help="Left margin")
+
+    parser.add_argument("-mr",
+                        "--margin_right",
+                        type=int,
+                        help="Right margin")
 
     args = parser.parse_args()
 
