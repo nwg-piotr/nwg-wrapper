@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 import argparse
 import sys
-import os
+
 
 import gi
 gi.require_version('Gtk', '3.0')
@@ -21,18 +21,14 @@ except ValueError:
                        'For example you might need to run:\n\n' +
                        'GI_TYPELIB_PATH=build/src LD_LIBRARY_PATH=build/src python3 ' + ' '.join(sys.argv))
 
-from gi.repository import Gtk, GtkLayerShell
+from gi.repository import Gtk, Gdk, GtkLayerShell
 
-from nwg_wrapper.tools import get_config_dir, copy_files
+from tools import *
 
 dir_name = os.path.dirname(__file__)
 
 
 def main():
-    config_dir = get_config_dir()
-    print(config_dir)
-    copy_files(os.path.join(dir_name, "config"), config_dir)
-
     parser = argparse.ArgumentParser()
 
     group = parser.add_mutually_exclusive_group()
@@ -51,7 +47,7 @@ def main():
     parser.add_argument("-c",
                         "--css",
                         type=str,
-                        default="",
+                        default="style.css",
                         help="Path to the css file")
 
     parser.add_argument("-o",
@@ -101,11 +97,24 @@ def main():
 
     args = parser.parse_args()
 
+    config_dir = get_config_dir()
+    # Only if not found
+    copy_files(os.path.join(dir_name, "config"), config_dir)
+
+    screen = Gdk.Screen.get_default()
+    provider = Gtk.CssProvider()
+    style_context = Gtk.StyleContext()
+    style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+    try:
+        provider.load_from_path(os.path.join(config_dir, args.css))
+    except:
+        print("ERROR: {} file not found, using GTK styling".format(os.path.join(config_dir, args.css)))
+
     window = Gtk.Window()
 
     GtkLayerShell.init_for_window(window)
     GtkLayerShell.set_layer(window, GtkLayerShell.Layer.BOTTOM)
-    GtkLayerShell.set_exclusive_zone(window, -1)
+    GtkLayerShell.set_exclusive_zone(window, 0)
 
     if args.position == "left" or args.position == "right":
         if args.position == "left":
@@ -123,9 +132,11 @@ def main():
     GtkLayerShell.set_margin(window, GtkLayerShell.Edge.RIGHT, args.margin_right)
 
     outer_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+    outer_box.set_property("name", "box-outer")
     window.add(outer_box)
 
     inner_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
+    inner_box.set_property("name", "box-inner")
     if args.alignment == "start":
         outer_box.pack_start(inner_box, False, True, 0)
     elif args.alignment == "end":
@@ -133,7 +144,21 @@ def main():
     else:
         outer_box.pack_start(inner_box, True, False, 0)
 
-    label = Gtk.Label(label='GTK Layer Shell with Python!')
+    label = Gtk.Label()
+    label.set_use_markup(True)
+
+    # Get data
+    script_path = os.path.join(config_dir, args.script) if args.script else ""
+    text_path = os.path.join(config_dir, args.script) if args.text else ""
+
+    if script_path:
+        print("Using script: {}".format(script_path))
+        label.set_markup(script_output(script_path))
+    elif text_path:
+        print("Using text file: {}".format(text_path))
+    else:
+        print("Neither script nor text file specified")
+
     inner_box.pack_start(label, False, False, 0)
 
     window.show_all()
