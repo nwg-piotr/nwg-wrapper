@@ -96,15 +96,10 @@ def main():
                         type=str,
                         help="Position: \"left\" or \"right\"; \"center\" if no value given")
 
-    parser.add_argument("-f",
-                        "--full",
-                        action="store_true",
-                        help="Take full window height")
-
     parser.add_argument("-a",
                         "--alignment",
                         type=str,
-                        help="Alignment in full width/height: \"start\" or \"end\"; \"middle\" if no value given")
+                        help="Vertical alignment \"start\" or \"end\"; \"middle\" if no value given")
 
     parser.add_argument("-mt",
                         "--margin_top",
@@ -165,9 +160,8 @@ def main():
         else:
             GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.RIGHT, True)
 
-    if args.full:
-        GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.TOP, True)
-        GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.BOTTOM, True)
+    GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.TOP, True)
+    GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.BOTTOM, True)
 
     GtkLayerShell.set_margin(window, GtkLayerShell.Edge.TOP, args.margin_top)
     GtkLayerShell.set_margin(window, GtkLayerShell.Edge.BOTTOM, args.margin_bottom)
