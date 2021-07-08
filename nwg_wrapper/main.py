@@ -9,7 +9,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 import argparse
 import sys
 
-
 import gi
 gi.require_version('Gtk', '3.0')
 try:
@@ -21,11 +20,26 @@ except ValueError:
                        'For example you might need to run:\n\n' +
                        'GI_TYPELIB_PATH=build/src LD_LIBRARY_PATH=build/src python3 ' + ' '.join(sys.argv))
 
-from gi.repository import Gtk, Gdk, GtkLayerShell
+from gi.repository import Gtk, Gdk, GLib, GtkLayerShell
 
 from tools import *
 
 dir_name = os.path.dirname(__file__)
+inner_box_width = 0
+inner_box = Gtk.Box()
+
+
+def update_label_from_script(path, label):
+    global inner_box, inner_box_width
+    label.set_markup(script_output(path))
+
+    # remember max box width to minimize floating when content length changes
+    w = inner_box.get_allocated_width()
+    if w > inner_box_width:
+        inner_box.set_size_request(w, 0)
+        inner_box_width = w
+
+    return True
 
 
 def main():
@@ -95,6 +109,12 @@ def main():
                         default=0,
                         help="Right margin")
 
+    parser.add_argument("-r",
+                        "--refresh",
+                        type=int,
+                        default=0,
+                        help="Refresh rate in milliseconds; 0 (no refresh) if no value given")
+
     args = parser.parse_args()
 
     config_dir = get_config_dir()
@@ -106,7 +126,9 @@ def main():
     style_context = Gtk.StyleContext()
     style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
     try:
-        provider.load_from_path(os.path.join(config_dir, args.css))
+        file = os.path.join(config_dir, args.css)
+        provider.load_from_path(file)
+        print("Using style: {}".format(file))
     except:
         print("ERROR: {} file not found, using GTK styling".format(os.path.join(config_dir, args.css)))
 
@@ -135,7 +157,7 @@ def main():
     outer_box.set_property("name", "box-outer")
     window.add(outer_box)
 
-    inner_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
+    inner_box.set_orientation(Gtk.Orientation.HORIZONTAL)
     inner_box.set_property("name", "box-inner")
     if args.alignment == "start":
         outer_box.pack_start(inner_box, False, True, 0)
@@ -153,7 +175,8 @@ def main():
 
     if script_path:
         print("Using script: {}".format(script_path))
-        label.set_markup(script_output(script_path))
+        #label.set_markup(script_output(script_path))
+        update_label_from_script(script_path, label)
     elif text_path:
         print("Using text file: {}".format(text_path))
     else:
@@ -163,6 +186,9 @@ def main():
 
     window.show_all()
     window.connect('destroy', Gtk.main_quit)
+
+    if script_path and args.refresh > 0:
+        GLib.timeout_add(args.refresh, update_label_from_script, script_path, label)
 
     Gtk.main()
 
