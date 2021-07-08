@@ -27,18 +27,3 @@ def copy_files(src_dir, dst_dir):
             if not os.path.isfile(os.path.join(dst_dir, file)):
                 copyfile(os.path.join(src_dir, file), os.path.join(dst_dir, file))
                 print("Copying '{}'".format(os.path.join(dst_dir, file)))
-
-
-def script_output(path):
-    try:
-        lines = subprocess.check_output(path).decode("unicode_escape").splitlines()
-        output = ""
-        for line in lines:
-            output += line + "\n"
-        # remove trailing "\n"
-        output = output[:-1]
-    except Exception as e:
-        output = '<span size="large">Error</span>\\n<i>{} not found</i>'.format(path)
-        print(e)
-        
-    return output

@@ -30,16 +30,37 @@ inner_box = Gtk.Box()
 
 
 def update_label_from_script(path, label):
-    global inner_box, inner_box_width
-    label.set_markup(script_output(path))
+    try:
+        output = subprocess.check_output(path).decode("unicode_escape")
+    except Exception as e:
+        output = '<span size="large">Error</span>\\n<i>{} not found</i>'.format(path)
+        print(e)
+    label.set_markup(output[:-1])
+    set_box_width()
 
-    # remember max box width to minimize floating when content length changes
+    return True
+
+
+def update_label_from_text(path, label):
+    try:
+        with open(path, 'r') as file:
+            output = file.read()
+    except Exception as e:
+        output = '<span size="large">Error</span>\\n<i>{} not found</i>'.format(path)
+        print(e)
+    label.set_markup(output)
+    set_box_width()
+
+    return True
+
+
+# remember max box width to minimize floating when content length changes
+def set_box_width():
+    global inner_box, inner_box_width
     w = inner_box.get_allocated_width()
     if w > inner_box_width:
         inner_box.set_size_request(w, 0)
         inner_box_width = w
-
-    return True
 
 
 def main():
@@ -171,14 +192,14 @@ def main():
 
     # Get data
     script_path = os.path.join(config_dir, args.script) if args.script else ""
-    text_path = os.path.join(config_dir, args.script) if args.text else ""
+    text_path = os.path.join(config_dir, args.text) if args.text else ""
 
     if script_path:
         print("Using script: {}".format(script_path))
-        #label.set_markup(script_output(script_path))
         update_label_from_script(script_path, label)
     elif text_path:
         print("Using text file: {}".format(text_path))
+        update_label_from_text(text_path, label)
     else:
         print("Neither script nor text file specified")
 

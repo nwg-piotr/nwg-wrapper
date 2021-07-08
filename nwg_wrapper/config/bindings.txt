@@ -1,0 +1,29 @@
+<span face="monospace">
+<span size="x-large" foreground="orange">Basic key bindings</span>
+
+Terminal emulator	<b>Mod+T</b>
+Web browser		<b>Mod+W</b>
+Text editor		<b>Mod+E</b>
+Wallpaper manager	<b>Mod+A</b>
+File manager		<b>Mod+F</b>
+Application launcher	<b>Alt+F1</b>
+
+Kill task		<b>Alt+Q</b>
+Exit menu		<b>Mod+X</b>
+Reload sway		<b>Mod+Shift+C</b>
+
+Switch workspace	<b>Alt+number</b>
+Move to workspace	<b>Mod+Shift+number</b>
+Move focus		<b>Mod+arrow</b>
+Move container		<b>Mod+Shift+arrow</b>
+
+Toggle floating		<b>Mod+Shift+Space</b>
+Toggle layout		<b>Alt+Tab</b>
+Fullscreen		<b>Mod+Shift+F</b>
+
+Move to scratchpad	<b>Mod+Shift+Z</b>
+Show scratchpad		<b>Mod+Z</b>
+
+<span size="small" foreground="#6699cc" style="italic">This wrapper displays static text from
+~/.config/nwg-wrapper/test.txt</span>
+</span>
