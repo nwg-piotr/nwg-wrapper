@@ -161,7 +161,6 @@ def main():
 
     if args.output:
         outputs = list_outputs()
-        print(outputs)
         try:
             monitor = outputs[args.output]["monitor"]
             GtkLayerShell.set_monitor(window, monitor)
