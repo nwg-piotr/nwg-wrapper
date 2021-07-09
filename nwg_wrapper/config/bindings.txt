@@ -1,7 +1,8 @@
 <span face="monospace">
-<span size="x-large" foreground="orange">Basic key bindings</span>
+<span size="x-large" foreground="#998000">Basic key bindings</span>
 
-Terminal emulator	<b>Mod+T</b>
+
+<span foreground="#eeeeee">Terminal emulator	<b>Mod+T</b>
 Web browser		<b>Mod+W</b>
 Text editor		<b>Mod+E</b>
 Wallpaper manager	<b>Mod+A</b>
@@ -22,7 +23,7 @@ Toggle layout		<b>Alt+Tab</b>
 Fullscreen		<b>Mod+Shift+F</b>
 
 Move to scratchpad	<b>Mod+Shift+Z</b>
-Show scratchpad		<b>Mod+Z</b>
+Show scratchpad		<b>Mod+Z</b></span>
 
 <span size="small" foreground="#6699cc" style="italic">This wrapper displays static text from
 ~/.config/nwg-wrapper/test.txt</span>

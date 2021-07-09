@@ -4,17 +4,19 @@
 # and it makes sense to use cities instead of countries!
 # Use tzselect to find their time zones.
 
-time=$(TZ='America/Fortaleza' date +"%H:%M")
-echo '<span size="large">Brazil</span>\t<b>'$time'</b>'
+time=$(TZ='America/Fortaleza' date +'%H:%M:%S')
+echo '<span size="25000" foreground="#998000" face="monospace" weight="bold">Brazil '$time'</span>'
 
+echo '<span size="x-large" face="monospace" foreground="#ccc">'
 time=$(TZ='America/Vancouver' date +"%H:%M")
-echo '<span size="large">Canada</span>\t<b>'$time'</b>'
+echo 'Canada\t<b>'$time'</b>'
 
 time=$(TZ='Europe/Dublin' date +"%H:%M")
-echo '<span size="large">Ireland</span>\t<b>'$time'</b>'
+echo 'Ireland\t<b>'$time'</b>'
 
 time=$(TZ='Asia/Kolkata' date +"%H:%M")
-echo '<span size="large">India</span>\t<b>'$time'</b>'
+echo 'India\t<b>'$time'</b>'
 
 time=$(TZ='Asia/Shanghai' date +"%H:%M")
-echo '<span size="large">China</span>\t<b>'$time'</b>'
+echo 'China\t<b>'$time'</b>'
+echo '</span>'
