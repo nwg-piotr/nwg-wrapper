@@ -31,11 +31,11 @@ inner_box = Gtk.Box()
 
 def update_label_from_script(path, label):
     try:
-        output = subprocess.check_output(path).decode("unicode_escape")
+        output = subprocess.check_output(path).decode("utf-8")[:-1]
     except Exception as e:
         output = '<span size="large" foreground="#ff0000">\nERROR:</span>\n\n<i>{}</i> '.format(e)
         print(e)
-    label.set_label(output[:-1])
+    label.set_label(output)
     set_box_width()
 
     return True
