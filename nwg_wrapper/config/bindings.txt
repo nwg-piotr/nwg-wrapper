@@ -1,5 +1,5 @@
 <span face="monospace">
-<span size="x-large" foreground="#998000">Basic key bindings</span>
+<span size="x-large" foreground="#998000">cheat sheet</span>
 
 
 <span foreground="#eeeeee">Terminal emulator	<b>Mod+T</b>
@@ -24,7 +24,4 @@ Fullscreen		<b>Mod+Shift+F</b>
 
 Move to scratchpad	<b>Mod+Shift+Z</b>
 Show scratchpad		<b>Mod+Z</b></span>
-
-<span size="small" foreground="#6699cc" style="italic">This wrapper displays static text from
-~/.config/nwg-wrapper/test.txt</span>
 </span>
