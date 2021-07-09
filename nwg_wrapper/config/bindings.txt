@@ -1,27 +1,27 @@
 <span face="monospace">
-<span size="x-large" foreground="#998000">cheat sheet</span>
+<span size="xx-large" foreground="#6699cc" face="serif">👀 Cheat sheet</span>
+<span foreground="#eeeeee">
+Terminal emulator	<span foreground="#6699cc" face="serif">Mod+T</span>
+Web browser		<span foreground="#6699cc" face="serif">Mod+W</span>
+Text editor		<span foreground="#6699cc" face="serif">Mod+E</span>
+Wallpaper manager	<span foreground="#6699cc" face="serif">Mod+A</span>
+File manager		<span foreground="#6699cc" face="serif">Mod+F</span>
+Application launcher	<span foreground="#6699cc" face="serif">Alt+F1</span>
 
+Kill task		<span foreground="#6699cc" face="serif">Alt+Q</span>
+Exit menu		<span foreground="#6699cc" face="serif">Mod+X</span>
+Reload sway		<span foreground="#6699cc" face="serif">Mod+Shift+C</span>
 
-<span foreground="#eeeeee">Terminal emulator	<b>Mod+T</b>
-Web browser		<b>Mod+W</b>
-Text editor		<b>Mod+E</b>
-Wallpaper manager	<b>Mod+A</b>
-File manager		<b>Mod+F</b>
-Application launcher	<b>Alt+F1</b>
+Switch workspace	<span foreground="#6699cc" face="serif">Alt+number</span>
+Move to workspace	<span foreground="#6699cc" face="serif">Mod+Shift+number</span>
+Move focus		<span foreground="#6699cc" face="serif">Mod+arrow</span>
+Move container		<span foreground="#6699cc" face="serif">Mod+Shift+arrow</span>
 
-Kill task		<b>Alt+Q</b>
-Exit menu		<b>Mod+X</b>
-Reload sway		<b>Mod+Shift+C</b>
+Toggle floating		<span foreground="#6699cc" face="serif">Mod+Shift+Space</span>
+Toggle layout		<span foreground="#6699cc" face="serif">Alt+Tab</span>
+Fullscreen		<span foreground="#6699cc" face="serif">Mod+Shift+F</span>
 
-Switch workspace	<b>Alt+number</b>
-Move to workspace	<b>Mod+Shift+number</b>
-Move focus		<b>Mod+arrow</b>
-Move container		<b>Mod+Shift+arrow</b>
-
-Toggle floating		<b>Mod+Shift+Space</b>
-Toggle layout		<b>Alt+Tab</b>
-Fullscreen		<b>Mod+Shift+F</b>
-
-Move to scratchpad	<b>Mod+Shift+Z</b>
-Show scratchpad		<b>Mod+Z</b></span>
+Move to scratchpad	<span foreground="#6699cc" face="serif">Mod+Shift+Z</span>
+Show scratchpad		<span foreground="#6699cc" face="serif">Mod+Z</span>
+</span>
 </span>
