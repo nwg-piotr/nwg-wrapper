@@ -33,7 +33,7 @@ def update_label_from_script(path, label):
     try:
         output = subprocess.check_output(path).decode("unicode_escape")
     except Exception as e:
-        output = '<span size="large" foreground="#ff0000">\nERROR:</span>\n\n<i>{}</i>\nnot found or not executable '.format(path)
+        output = '<span size="large" foreground="#ff0000">\nERROR:</span>\n\n<i>{}</i> '.format(e)
         print(e)
     label.set_label(output[:-1])
     set_box_width()
