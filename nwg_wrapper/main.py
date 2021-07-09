@@ -35,7 +35,7 @@ def update_label_from_script(path, label):
     except Exception as e:
         output = '<span size="large">Error</span>\\n<i>{} not found</i>'.format(path)
         print(e)
-    label.set_markup(output[:-1])
+    label.set_label(output[:-1])
     set_box_width()
 
     return True
@@ -48,7 +48,7 @@ def update_label_from_text(path, label):
     except Exception as e:
         output = '<span size="large">Error</span>\\n<i>{} not found</i>'.format(path)
         print(e)
-    label.set_markup(output)
+    label.set_label(output)
     set_box_width()
 
     return True
@@ -99,7 +99,12 @@ def main():
     parser.add_argument("-a",
                         "--alignment",
                         type=str,
-                        help="Vertical alignment \"start\" or \"end\"; \"middle\" if no value given")
+                        help="Vertical alignment: \"start\" or \"end\"; \"middle\" if no value given")
+
+    parser.add_argument("-j",
+                        "--justify",
+                        type=str,
+                        help="Text justification: \"right\" or \"center\"; \"left\" if no value given")
 
     parser.add_argument("-mt",
                         "--margin_top",
@@ -183,6 +188,13 @@ def main():
 
     label = Gtk.Label()
     label.set_use_markup(True)
+    if args.justify:
+        if args.justify == "right":
+            label.set_justify(Gtk.Justification.RIGHT)
+        elif args.justify == "center":
+            label.set_justify(Gtk.Justification.CENTER)
+        else:
+            label.set_justify(Gtk.Justification.LEFT)
 
     # Get data
     script_path = os.path.join(config_dir, args.script) if args.script else ""
