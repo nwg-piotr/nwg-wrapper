@@ -159,6 +159,15 @@ def main():
     GtkLayerShell.set_layer(window, GtkLayerShell.Layer.BOTTOM)
     GtkLayerShell.set_exclusive_zone(window, 0)
 
+    if args.output:
+        outputs = list_outputs()
+        print(outputs)
+        try:
+            monitor = outputs[args.output]["monitor"]
+            GtkLayerShell.set_monitor(window, monitor)
+        except KeyError:
+            print("No such output: {}".format(args.output))
+
     if args.position == "left" or args.position == "right":
         if args.position == "left":
             GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.LEFT, True)
