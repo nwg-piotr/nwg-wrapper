@@ -1,5 +1,5 @@
 <span face="monospace">
-<span size="xx-large" foreground="#6699cc" face="serif">👀 Cheat sheet</span>
+<span size="xx-large" foreground="#6699cc" face="serif">Cheat sheet</span>
 <span foreground="#eeeeee">
 Terminal emulator	<span foreground="#6699cc" face="serif">Mod+T</span>
 Web browser		<span foreground="#6699cc" face="serif">Mod+W</span>
