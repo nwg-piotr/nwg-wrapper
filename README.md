@@ -75,14 +75,14 @@ optional arguments:
 
 ### Sample usage of the provided files
 
-`nwg-wrapper -s date-wttr.sh -p left -ml 200 -c date-wttr.css -r 1800000`
+`nwg-wrapper -s date-wttr.sh -r 1800000 -c date-wttr.css -p left -ml 200`
 
 ![2021-07-10-050045_screenshot.png](https://scrot.cloud/images/2021/07/10/2021-07-10-050045_screenshot.png)
 
-`nwg-wrapper -t bindings.pango -p left -ml 200 -c bindings.css`
+`nwg-wrapper -t bindings.pango -c bindings.css -p left -ml 200`
 
 ![2021-07-10-050359_screenshot.png](https://scrot.cloud/images/2021/07/10/2021-07-10-050359_screenshot.png)
 
-`nwg-wrapper -s timezones.sh -p right -a start -mr 50 -mt 50 -j right -c timezones.css -r 1000`
+`nwg-wrapper -s timezones.sh -r 1000 -c timezones.css -p right -mr 50 -a start -mt 50 -j right`
 
 ![2021-07-10-050810_screenshot.png](https://scrot.cloud/images/2021/07/10/2021-07-10-050810_screenshot.png)
