@@ -24,7 +24,7 @@ except ValueError:
 
 from gi.repository import Gtk, Gdk, GLib, GtkLayerShell
 
-from tools import *
+from nwg_wrapper.tools import *
 
 dir_name = os.path.dirname(__file__)
 inner_box_width = 0
