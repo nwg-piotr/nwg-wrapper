@@ -3,7 +3,7 @@
 import os
 import sys
 import subprocess
-from shutil import copyfile
+from shutil import copyfile, copy2
 
 import gi
 gi.require_version('Gdk', '3.0')
@@ -30,7 +30,8 @@ def copy_files(src_dir, dst_dir):
     for file in src_files:
         if os.path.isfile(os.path.join(src_dir, file)):
             if not os.path.isfile(os.path.join(dst_dir, file)):
-                copyfile(os.path.join(src_dir, file), os.path.join(dst_dir, file))
+                # copy, preserve file attributes
+                copy2(os.path.join(src_dir, file), os.path.join(dst_dir, file))
                 print("Copying '{}'".format(os.path.join(dst_dir, file)))
 
 
