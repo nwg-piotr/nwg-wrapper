@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 import argparse
 import sys
 
-from __about__ import __version__
+from nwg_wrapper.__about__ import __version__
 
 import gi
 gi.require_version('Gtk', '3.0')
