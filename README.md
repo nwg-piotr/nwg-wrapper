@@ -9,7 +9,8 @@ to place the window on the bottom layer.
 As well the script output, at the text file may be formatted with 
 [Pango Markup](https://developer.gnome.org/pygtk/stable/pango-markup-language.html). The window appearance is defined
 with css styling. See sample files in the config folder. They also come preinstalled in your `~/.config/nwg-wrapper`
-directory.
+directory. You can find an example of use [at the bottom](https://github.com/nwg-piotr/nwg-wrapper#sample-usage) 
+of the page.
 
 ## Dependencies
 
