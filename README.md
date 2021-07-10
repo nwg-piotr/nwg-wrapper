@@ -73,7 +73,7 @@ optional arguments:
   -v, --version         display version information
 ```
 
-### Sample usage of the provided files
+### Sample usage
 
 `nwg-wrapper -s date-wttr.sh -r 1800000 -c date-wttr.css -p left -ml 200`
 
