@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 import argparse
 import sys
 
+from __about__ import __version__
+
 import gi
 gi.require_version('Gtk', '3.0')
 try:
@@ -135,6 +137,12 @@ def main():
                         type=int,
                         default=0,
                         help="Refresh rate in milliseconds; 0 (no refresh) if no value given")
+
+    parser.add_argument("-v",
+                        "--version",
+                        action="version",
+                        version="%(prog)s version {}".format(__version__),
+                        help="display version information")
 
     args = parser.parse_args()
 
