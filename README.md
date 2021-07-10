@@ -72,3 +72,17 @@ optional arguments:
                         Refresh rate in milliseconds; 0 (no refresh) if no value given
   -v, --version         display version information
 ```
+
+### Sample usage of the provided files
+
+`nwg-wrapper -s date-wttr.sh -p left -ml 200 -c date-wttr.css -r 1800000`
+
+![2021-07-10-050045_screenshot.png](https://scrot.cloud/images/2021/07/10/2021-07-10-050045_screenshot.png)
+
+`nwg-wrapper -t bindings.pango -p left -ml 200 -c bindings.css`
+
+![2021-07-10-050359_screenshot.png](https://scrot.cloud/images/2021/07/10/2021-07-10-050359_screenshot.png)
+
+`nwg-wrapper -s timezones.sh -p right -a start -mr 50 -mt 50 -j right -c timezones.css -r 1000`
+
+![2021-07-10-050810_screenshot.png](https://scrot.cloud/images/2021/07/10/2021-07-10-050810_screenshot.png)
