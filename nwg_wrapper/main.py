@@ -146,6 +146,11 @@ def main():
 
     args = parser.parse_args()
 
+    if not args.text and not args.script:
+        print("ERROR: Neither script nor text file specified")
+        parser.print_help()
+        sys.exit(1)
+
     config_dir = get_config_dir()
     # Only if not found
     copy_files(os.path.join(dir_name, "config"), config_dir)
@@ -222,8 +227,6 @@ def main():
     elif text_path:
         print("Using text file: {}".format(text_path))
         update_label_from_text(text_path, label)
-    else:
-        print("Neither script nor text file specified")
 
     inner_box.pack_start(label, False, False, 0)
 
