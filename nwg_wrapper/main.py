@@ -36,7 +36,7 @@ def update_label_from_script(path, label):
         output = subprocess.check_output(path).decode("utf-8")[:-1]
     except Exception as e:
         output = '<span size="large" foreground="#ff0000">\nERROR:</span>\n\n<i>{}</i> '.format(e)
-        print(e)
+        sys.stderr.write("{}\n".format(e))
     label.set_label(output)
     set_box_width()
 
@@ -49,7 +49,7 @@ def update_label_from_text(path, label):
             output = file.read()
     except Exception as e:
         output = '<span size="large" foreground="#ff0000">\nERROR:</span>\n\n<i>{}</i> not found\n'.format(path)
-        print(e)
+        sys.stderr.write("{}\n".format(e))
     label.set_label(output)
     set_box_width()
 
@@ -147,24 +147,13 @@ def main():
     args = parser.parse_args()
 
     if not args.text and not args.script:
-        print("ERROR: Neither script nor text file specified")
-        parser.print_help()
+        sys.stderr.write("ERROR: Neither script nor text file specified\n")
+        parser.print_help(sys.stderr)
         sys.exit(1)
 
     config_dir = get_config_dir()
     # Only if not found
     copy_files(os.path.join(dir_name, "config"), config_dir)
-
-    screen = Gdk.Screen.get_default()
-    provider = Gtk.CssProvider()
-    style_context = Gtk.StyleContext()
-    style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-    try:
-        file = os.path.join(config_dir, args.css)
-        provider.load_from_path(file)
-        print("Using style: {}".format(file))
-    except:
-        print("ERROR: {} file not found, using GTK styling".format(os.path.join(config_dir, args.css)))
 
     window = Gtk.Window()
 
@@ -179,6 +168,17 @@ def main():
             GtkLayerShell.set_monitor(window, monitor)
         except KeyError:
             print("No such output: {}".format(args.output))
+
+    screen = Gdk.Screen.get_default()
+    provider = Gtk.CssProvider()
+    style_context = Gtk.StyleContext()
+    style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+    try:
+        file = os.path.join(config_dir, args.css)
+        provider.load_from_path(file)
+        print("Using style: {}".format(file))
+    except:
+        sys.stderr.write("ERROR: {} file not found, using GTK styling\n".format(os.path.join(config_dir, args.css)))
 
     if args.position == "left" or args.position == "right":
         if args.position == "left":
@@ -222,7 +222,8 @@ def main():
     text_path = os.path.join(config_dir, args.text) if args.text else ""
 
     if script_path:
-        print("Using script: {}".format(script_path))
+        r = "refresh rate {} ms".format(args.refresh) if args.refresh else "no refresh"
+        print("Using script: {}, {}".format(script_path, r))
         update_label_from_script(script_path, label)
     elif text_path:
         print("Using text file: {}".format(text_path))
