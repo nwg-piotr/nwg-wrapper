@@ -12,8 +12,6 @@ with css styling. See sample files in the config folder. They also come preinsta
 directory. You can find an example of use [at the bottom](https://github.com/nwg-piotr/nwg-wrapper#sample-usage) 
 of the page.
 
-[![Packaging status](https://repology.org/badge/vertical-allrepos/nwg-wrapper.svg)](https://repology.org/project/nwg-wrapper/versions)
-
 ## Dependencies
 
 - `python` (python3)
