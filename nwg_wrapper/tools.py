@@ -115,23 +115,26 @@ def parse_output(string, justify=""):
     lines = string.splitlines(keepends=False)
     block = []
     for line in lines:
-        if not line.startswith('#img'):
-            block.append(line)
-        else:
-            if len(block) > 0:
-                label = Gtk.Label()
-                label.set_text('\n'.join(block))
-                if justify:
-                    if justify == "right":
-                        label.set_justify(Gtk.Justification.RIGHT)
-                    elif justify == "center":
-                        label.set_justify(Gtk.Justification.CENTER)
-                    else:
-                        label.set_justify(Gtk.Justification.LEFT)
-                result.append(label)
-                block = []
+        if not line.startswith('//'):
+            if not line.startswith('#img'):
+                block.append(line)
+            else:
+                if len(block) > 0:
+                    label = Gtk.Label()
+                    label.set_text('\n'.join(block))
+                    if justify:
+                        if justify == "right":
+                            label.set_justify(Gtk.Justification.RIGHT)
+                            label.set_xalign(1)
+                        elif justify == "center":
+                            label.set_justify(Gtk.Justification.CENTER)
+                        else:
+                            label.set_justify(Gtk.Justification.LEFT)
+                            label.set_xalign(0)
+                    result.append(label)
+                    block = []
 
-            result.append(parse_image(line))
+                result.append(parse_image(line))
 
     if len(block) > 0:
         label = Gtk.Label()
@@ -139,10 +142,12 @@ def parse_output(string, justify=""):
         if justify:
             if justify == "right":
                 label.set_justify(Gtk.Justification.RIGHT)
+                label.set_xalign(1)
             elif justify == "center":
                 label.set_justify(Gtk.Justification.CENTER)
             else:
                 label.set_justify(Gtk.Justification.LEFT)
+                label.set_xalign(0)
         result.append(label)
 
     return result
@@ -186,9 +191,9 @@ class ClickableImage(Gtk.EventBox):
         self.align = align
         Gtk.EventBox.__init__(self)
         try:
-            image = Gtk.Image()
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(path, width, height)
-            image.set_from_pixbuf(pixbuf)
+
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(path, width, height, False)
+            image = Gtk.Image.new_from_pixbuf(pixbuf)
             self.add(image)
             if cmd:
                 self.connect('button-press-event', self.on_button_press)
@@ -197,5 +202,6 @@ class ClickableImage(Gtk.EventBox):
             image = Gtk.Image.new_from_icon_name("image-missing", Gtk.IconSize.INVALID)
             self.add(image)
 
-    def on_button_press(self):
-        print(self.cmd)
+    def on_button_press(self, widget, event_button):
+        print("Executing '{}'".format(self.cmd))
+        subprocess.Popen('exec {}'.format(self.cmd), shell=True)

@@ -56,13 +56,17 @@ def build_from_text(path, v_box, justify):
     content = parse_output(output, justify)
     for item in content:
         h_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        h_box.set_property("name", "test")
         v_box.pack_start(h_box, False, False, 0)
-        if isinstance(item, ClickableImage) and item.align == "end":
-            h_box.pack_end(item, False, True, 0)
-        elif isinstance(item, ClickableImage) and item.align != "middle":
-            h_box.pack_start(item, False, True, 0)
+        if isinstance(item, ClickableImage):
+            if item.align == "end":
+                h_box.pack_end(item, False, False, 0)
+            elif item.align != "center":
+                h_box.pack_start(item, False, False, 0)
+            else:
+                h_box.pack_start(item, True, True, 0)
         else:
-            h_box.pack_start(item, True, False, 0)
+            h_box.pack_start(item, True, True, 0)
 
     set_box_width()
 
@@ -119,6 +123,7 @@ def main():
     parser.add_argument("-j",
                         "--justify",
                         type=str,
+                        default="left",
                         help="Text justification: \"right\" or \"center\"; \"left\" if no value given")
 
     parser.add_argument("-mt",
