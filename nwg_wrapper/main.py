@@ -45,14 +45,25 @@ def update_label_from_script(path, label):
     return True
 
 
-def update_label_from_text(path, label):
+def build_from_text(path, v_box, justify):
     try:
         with open(path, 'r') as file:
             output = file.read()
     except Exception as e:
         output = '<span size="large" foreground="#ff0000">\nERROR:</span>\n\n<i>{}</i> not found\n'.format(path)
         sys.stderr.write("{}\n".format(e))
-    label.set_label(output)
+
+    content = parse_output(output, justify)
+    for item in content:
+        h_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        v_box.pack_start(h_box, False, False, 0)
+        if isinstance(item, ClickableImage) and item.align == "end":
+            h_box.pack_end(item, False, True, 0)
+        elif isinstance(item, ClickableImage) and item.align != "middle":
+            h_box.pack_start(item, False, True, 0)
+        else:
+            h_box.pack_start(item, True, False, 0)
+
     set_box_width()
 
     return True
@@ -209,7 +220,9 @@ def main():
     else:
         outer_box.pack_start(inner_box, True, False, 0)
 
-    label = Gtk.Label()
+    v_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+    inner_box.pack_start(v_box, False, False, 0)
+    """label = Gtk.Label()
     label.set_use_markup(True)
     if args.justify:
         if args.justify == "right":
@@ -217,7 +230,7 @@ def main():
         elif args.justify == "center":
             label.set_justify(Gtk.Justification.CENTER)
         else:
-            label.set_justify(Gtk.Justification.LEFT)
+            label.set_justify(Gtk.Justification.LEFT)"""
 
     # Get data
     script_path = os.path.join(config_dir, args.script) if args.script else ""
@@ -229,9 +242,9 @@ def main():
         update_label_from_script(script_path, label)
     elif text_path:
         print("Using text file: {}".format(text_path))
-        update_label_from_text(text_path, label)
+        build_from_text(text_path, v_box, args.justify)
 
-    inner_box.pack_start(label, False, False, 0)
+    # inner_box.pack_start(label, False, False, 0)
 
     window.show_all()
     window.connect('destroy', Gtk.main_quit)

@@ -108,3 +108,94 @@ def list_outputs():
                 outputs_dict[key]["monitor"] = monitor
 
     return outputs_dict
+
+
+def parse_output(string, justify=""):
+    result = []
+    lines = string.splitlines(keepends=False)
+    block = []
+    for line in lines:
+        if not line.startswith('#img'):
+            block.append(line)
+        else:
+            if len(block) > 0:
+                label = Gtk.Label()
+                label.set_text('\n'.join(block))
+                if justify:
+                    if justify == "right":
+                        label.set_justify(Gtk.Justification.RIGHT)
+                    elif justify == "center":
+                        label.set_justify(Gtk.Justification.CENTER)
+                    else:
+                        label.set_justify(Gtk.Justification.LEFT)
+                result.append(label)
+                block = []
+
+            result.append(parse_image(line))
+
+    if len(block) > 0:
+        label = Gtk.Label()
+        label.set_text('\n'.join(block))
+        if justify:
+            if justify == "right":
+                label.set_justify(Gtk.Justification.RIGHT)
+            elif justify == "center":
+                label.set_justify(Gtk.Justification.CENTER)
+            else:
+                label.set_justify(Gtk.Justification.LEFT)
+        result.append(label)
+
+    return result
+
+
+def parse_image(string):
+    path = ""
+    width = 30
+    height = 30
+    cmd = ""
+    align = ""
+    lines = string.split()
+    for line in lines:
+        line = line.replace('"', '')
+        line = line.replace("'", '')
+        if '=' in line:
+            if 'path' in line:
+                path = line.split('=')[1]
+            elif 'width' in line:
+                try:
+                    width = int(line.split('=')[1])
+                except:
+                    pass
+            elif 'height' in line:
+                try:
+                    height = int(line.split('=')[1])
+                except:
+                    pass
+            elif 'cmd' in line:
+                cmd = line.split('=')[1]
+            elif 'align' in line:
+                align = line.split('=')[1]
+
+    print(path, width, height, cmd, align)
+    return ClickableImage(path, width, height, cmd, align)
+
+
+class ClickableImage(Gtk.EventBox):
+    def __init__(self, path, width, height, cmd, align):
+        self.cmd = cmd
+        self.align = align
+        Gtk.EventBox.__init__(self)
+        try:
+            image = Gtk.Image()
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(path, width, height)
+            image.set_from_pixbuf(pixbuf)
+            self.add(image)
+            if cmd:
+                self.connect('button-press-event', self.on_button_press)
+        except Exception as e:
+            print(e)
+            image = Gtk.Image.new_from_icon_name("image-missing", Gtk.IconSize.INVALID)
+            self.add(image)
+
+    def on_button_press(self):
+        print(self.cmd)
