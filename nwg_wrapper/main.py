@@ -33,13 +33,31 @@ inner_box_width = 0
 inner_box = Gtk.Box()
 
 
-def update_label_from_script(path, label):
+def update_label_from_script(path, v_box, justify):
+    for item in v_box.get_children():
+        item.destroy()
     try:
         output = subprocess.check_output(path).decode("utf-8")[:-1]
     except Exception as e:
         output = '<span size="large" foreground="#ff0000">\nERROR:</span>\n\n<i>{}</i> '.format(e)
         sys.stderr.write("{}\n".format(e))
-    label.set_label(output)
+
+    content = parse_output(output, justify)
+    for item in content:
+        h_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        h_box.set_property("name", "test")
+        v_box.pack_start(h_box, False, False, 0)
+        if isinstance(item, AlignedImage):
+            if item.align == "end":
+                h_box.pack_end(item, False, False, 0)
+            elif item.align != "center":
+                h_box.pack_start(item, False, False, 0)
+            else:
+                h_box.pack_start(item, True, True, 0)
+        else:
+            h_box.pack_start(item, True, True, 0)
+
+    v_box.show_all()
     set_box_width()
 
     return True
@@ -58,7 +76,7 @@ def build_from_text(path, v_box, justify):
         h_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         h_box.set_property("name", "test")
         v_box.pack_start(h_box, False, False, 0)
-        if isinstance(item, ClickableImage):
+        if isinstance(item, AlignedImage):
             if item.align == "end":
                 h_box.pack_end(item, False, False, 0)
             elif item.align != "center":
@@ -227,15 +245,6 @@ def main():
 
     v_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
     inner_box.pack_start(v_box, False, False, 0)
-    """label = Gtk.Label()
-    label.set_use_markup(True)
-    if args.justify:
-        if args.justify == "right":
-            label.set_justify(Gtk.Justification.RIGHT)
-        elif args.justify == "center":
-            label.set_justify(Gtk.Justification.CENTER)
-        else:
-            label.set_justify(Gtk.Justification.LEFT)"""
 
     # Get data
     script_path = os.path.join(config_dir, args.script) if args.script else ""
@@ -244,18 +253,16 @@ def main():
     if script_path:
         r = "refresh rate {} ms".format(args.refresh) if args.refresh else "no refresh"
         print("Using script: {}, {}".format(script_path, r))
-        update_label_from_script(script_path, label)
+        update_label_from_script(script_path, v_box, args.justify)
     elif text_path:
         print("Using text file: {}".format(text_path))
         build_from_text(text_path, v_box, args.justify)
-
-    # inner_box.pack_start(label, False, False, 0)
 
     window.show_all()
     window.connect('destroy', Gtk.main_quit)
 
     if script_path and args.refresh > 0:
-        GLib.timeout_add(args.refresh, update_label_from_script, script_path, label)
+        GLib.timeout_add(args.refresh, update_label_from_script, script_path, v_box, args.justify)
 
     Gtk.main()
 

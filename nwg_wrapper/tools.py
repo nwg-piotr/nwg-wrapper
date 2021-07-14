@@ -3,12 +3,14 @@
 import os
 import sys
 import subprocess
-from shutil import copyfile, copy2
+from shutil import copy2
 
 import gi
+
 gi.require_version('Gdk', '3.0')
 
 from gi.repository import Gtk, Gdk, GdkPixbuf
+
 
 def get_config_dir():
     """
@@ -121,7 +123,7 @@ def parse_output(string, justify=""):
             else:
                 if len(block) > 0:
                     label = Gtk.Label()
-                    label.set_text('\n'.join(block))
+                    label.set_markup('\n'.join(block))
                     if justify:
                         if justify == "right":
                             label.set_justify(Gtk.Justification.RIGHT)
@@ -138,7 +140,7 @@ def parse_output(string, justify=""):
 
     if len(block) > 0:
         label = Gtk.Label()
-        label.set_text('\n'.join(block))
+        label.set_markup('\n'.join(block))
         if justify:
             if justify == "right":
                 label.set_justify(Gtk.Justification.RIGHT)
@@ -157,7 +159,6 @@ def parse_image(string):
     path = ""
     width = 30
     height = 30
-    cmd = ""
     align = ""
     lines = string.split()
     for line in lines:
@@ -176,32 +177,19 @@ def parse_image(string):
                     height = int(line.split('=')[1])
                 except:
                     pass
-            elif 'cmd' in line:
-                cmd = line.split('=')[1]
             elif 'align' in line:
                 align = line.split('=')[1]
 
-    print(path, width, height, cmd, align)
-    return ClickableImage(path, width, height, cmd, align)
+    return AlignedImage(path, width, height, align)
 
 
-class ClickableImage(Gtk.EventBox):
-    def __init__(self, path, width, height, cmd, align):
-        self.cmd = cmd
+class AlignedImage(Gtk.Image):
+    def __init__(self, path, width, height, align):
         self.align = align
-        Gtk.EventBox.__init__(self)
+        Gtk.Image.__init__(self)
         try:
-
             pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(path, width, height, False)
-            image = Gtk.Image.new_from_pixbuf(pixbuf)
-            self.add(image)
-            if cmd:
-                self.connect('button-press-event', self.on_button_press)
+            self.set_from_pixbuf(pixbuf)
         except Exception as e:
-            print(e)
-            image = Gtk.Image.new_from_icon_name("image-missing", Gtk.IconSize.INVALID)
-            self.add(image)
-
-    def on_button_press(self, widget, event_button):
-        print("Executing '{}'".format(self.cmd))
-        subprocess.Popen('exec {}'.format(self.cmd), shell=True)
+            sys.stderr.write("{}\n".format(e))
+            self.set_from_icon_name("image-missing", Gtk.IconSize.INVALID)
