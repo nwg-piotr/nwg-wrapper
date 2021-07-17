@@ -45,7 +45,6 @@ def update_label_from_script(path, v_box, justify):
     content = parse_output(output, justify)
     for item in content:
         h_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        h_box.set_property("name", "test")
         v_box.pack_start(h_box, False, False, 0)
         if isinstance(item, AlignedImage):
             if item.align == "end":
