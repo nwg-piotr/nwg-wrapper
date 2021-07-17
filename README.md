@@ -89,3 +89,20 @@ optional arguments:
 `nwg-wrapper -s timezones.sh -r 1000 -c timezones.css -p right -mr 50 -a start -mt 50 -j right`
 
 ![2021-07-10-050810_screenshot.png](https://scrot.cloud/images/2021/07/10/2021-07-10-050810_screenshot.png)
+
+## (Very basic) image support
+
+nwg-wrapper creates a Gtk.Label widget out of the script output, or the .pango file content. To add an image to it,
+we need to pack a Gtk.Image widget before or after the label. To insert an image between the lines of text, the latter 
+needs to be divided into more Gtk.Label widgets. Remember to close all Pango tags before adding an image this way.
+
+Syntax:
+
+`#img path=/full/image/path width=int height=int align=string` [start (default) | center | end]
+
+The line is being parsed in the simplest possible way. Spaces are delimiters, so do not use them inside the fields.
+It also applies to the file path.
+
+See the [example script](https://github.com/nwg-piotr/nwg-wrapper/blob/img/examples/cowsay.py), and the result below.
+
+![cowsay.png](https://scrot.cloud/images/2021/07/17/cowsay.png)
