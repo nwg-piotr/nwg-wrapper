@@ -94,7 +94,7 @@ optional arguments:
 
 nwg-wrapper creates a Gtk.Label widget out of the script output, or the .pango file content. To add an image to it,
 we need to pack a Gtk.Image widget before or after the label. To insert an image inside the text, it needs to be divided
-between more Gtk.Label widgets. Remember to close all Pango <tags> before adding the image this way.
+between more Gtk.Label widgets. Remember to close all Pango tags before adding the image this way.
 
 Syntax:
 
