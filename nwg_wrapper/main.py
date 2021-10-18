@@ -10,6 +10,7 @@ License: MIT
 
 import argparse
 import sys
+import signal
 
 from nwg_wrapper.__about__ import __version__
 
@@ -24,13 +25,29 @@ except ValueError:
                        'For example you might need to run:\n\n' +
                        'GI_TYPELIB_PATH=build/src LD_LIBRARY_PATH=build/src python3 ' + ' '.join(sys.argv))
 
-from gi.repository import Gtk, Gdk, GLib, GtkLayerShell
+from gi.repository import GLib, GtkLayerShell
 
 from nwg_wrapper.tools import *
 
 dir_name = os.path.dirname(__file__)
 inner_box_width = 0
 inner_box = Gtk.Box()
+layer = 1
+
+
+def signal_handler(sig, frame):
+    global layer
+    if sig == 2 or sig == 15:
+        desc = {2: "SIGINT", 15: "SIGTERM"}
+        print("Terminated with {}".format(desc[sig]))
+        Gtk.main_quit()
+    elif sig == 10:
+        layer = 1 if layer == 2 else 2
+
+
+def switch_layer(window):
+    GtkLayerShell.set_layer(window, layer)
+    return True
 
 
 def update_label_from_script(path, v_box, justify):
@@ -161,6 +178,12 @@ def main():
                         default=0,
                         help="Left margin")
 
+    parser.add_argument("-l",
+                        "--layer",
+                        type=int,
+                        default=1,
+                        help="Layer: 1 for bottom, 2 for top")
+
     parser.add_argument("-mr",
                         "--margin_right",
                         type=int,
@@ -181,6 +204,9 @@ def main():
 
     args = parser.parse_args()
 
+    global layer
+    layer = args.layer
+
     if not args.text and not args.script:
         sys.stderr.write("ERROR: Neither script nor text file specified\n")
         parser.print_help(sys.stderr)
@@ -193,7 +219,7 @@ def main():
     window = Gtk.Window()
 
     GtkLayerShell.init_for_window(window)
-    GtkLayerShell.set_layer(window, GtkLayerShell.Layer.BOTTOM)
+    GtkLayerShell.set_layer(window, args.layer)
     GtkLayerShell.set_exclusive_zone(window, 0)
 
     if args.output:
@@ -262,6 +288,12 @@ def main():
 
     if script_path and args.refresh > 0:
         GLib.timeout_add(args.refresh, update_label_from_script, script_path, v_box, args.justify)
+
+    GLib.timeout_add(100, switch_layer, window)
+
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
+    signal.signal(signal.SIGUSR1, signal_handler)
 
     Gtk.main()
 
