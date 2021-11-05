@@ -85,7 +85,7 @@ optional arguments:
 
 ### Layers
 
-The window will appear on the top or bottom layer, according to the `-l | --layer` argument value (1 for bottom by default).
+The window will appear on the top or bottom layer, according to the `-l` | `--layer` argument value (1 for bottom by default).
 You may switch layers by sending `SIGUSR1` [signal](https://man7.org/linux/man-pages/man7/signal.7.html)
 to the `nwg-wrapper` process, e.g. like this:
 
@@ -95,7 +95,7 @@ or this:
 
 `pkill -f -USR1 nwg-wrapper`
 
-You can choose a different signal number with the `-sl | --sig_layer` argument.
+You can choose a different signal number with the `-sl` | `--sig_layer` argument.
 
 ### Visibility
 
