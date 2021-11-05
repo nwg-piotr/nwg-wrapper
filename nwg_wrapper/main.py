@@ -127,19 +127,19 @@ def main():
                        "--script",
                        type=str,
                        default="",
-                       help="Path to the script whose output you want to display")
+                       help="path to the Script whose output you want to display")
 
     group.add_argument("-t",
                        "--text",
                        type=str,
                        default="",
-                       help="Path to the text file you want to display")
+                       help="path to the Text file you want to display")
 
     parser.add_argument("-c",
                         "--css",
                         type=str,
                         default="style.css",
-                        help="Path to the css file")
+                        help="path to the Css file")
 
     parser.add_argument("-o",
                         "--output",
@@ -155,55 +155,55 @@ def main():
     parser.add_argument("-a",
                         "--alignment",
                         type=str,
-                        help="Vertical alignment: \"start\" or \"end\"; \"middle\" if no value given")
+                        help="vertical Alignment: \"start\" or \"end\"; \"middle\" if no value given")
 
     parser.add_argument("-j",
                         "--justify",
                         type=str,
                         default="left",
-                        help="Text justification: \"right\" or \"center\"; \"left\" if no value given")
+                        help="text Justification: \"right\" or \"center\"; \"left\" if no value given")
 
     parser.add_argument("-mt",
                         "--margin_top",
                         type=int,
                         default=0,
-                        help="Top margin")
+                        help="Top Margin")
 
     parser.add_argument("-mb",
                         "--margin_bottom",
                         type=int,
                         default=0,
-                        help="Bottom margin")
+                        help="Bottom Margin")
 
     parser.add_argument("-ml",
                         "--margin_left",
                         type=int,
                         default=0,
-                        help="Left margin")
+                        help="Left Margin")
 
     parser.add_argument("-mr",
                         "--margin_right",
                         type=int,
                         default=0,
-                        help="Right margin")
+                        help="Right Margin")
 
     parser.add_argument("-l",
                         "--layer",
                         type=int,
                         default=1,
-                        help="Layer: 1 for bottom, 2 for top")
+                        help="initial Layer: 1 for bottom, 2 for top")
 
     parser.add_argument("-sl",
                         "--sig_layer",
                         type=int,
                         default=10,
-                        help="Number of signal to switch layers")
+                        help="Signal number for Layer switching")
 
     parser.add_argument("-sv",
                         "--sig_visibility",
                         type=int,
                         default=12,
-                        help="Number of signal to switch layers")
+                        help="Signal number for toggling Visibility ")
 
     parser.add_argument("-r",
                         "--refresh",
