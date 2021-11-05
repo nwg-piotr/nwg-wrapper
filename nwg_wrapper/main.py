@@ -10,6 +10,7 @@ License: MIT
 
 import argparse
 import sys
+import signal
 
 from nwg_wrapper.__about__ import __version__
 
@@ -24,13 +25,32 @@ except ValueError:
                        'For example you might need to run:\n\n' +
                        'GI_TYPELIB_PATH=build/src LD_LIBRARY_PATH=build/src python3 ' + ' '.join(sys.argv))
 
-from gi.repository import Gtk, Gdk, GLib, GtkLayerShell
+from gi.repository import GLib, GtkLayerShell
 
 from nwg_wrapper.tools import *
 
 dir_name = os.path.dirname(__file__)
 inner_box_width = 0
 inner_box = Gtk.Box()
+window = None
+layer = 1
+args = None
+
+
+def signal_handler(sig, frame):
+    global layer
+    if sig == 2 or sig == 15:
+        desc = {2: "SIGINT", 15: "SIGTERM"}
+        print("Terminated with {}".format(desc[sig]))
+        Gtk.main_quit()
+    elif sig == args.sig_layer:
+        layer = 1 if layer == 2 else 2
+        GtkLayerShell.set_layer(window, layer)
+    elif sig == args.sig_visibility:
+        if window.is_visible():
+            window.hide()
+        else:
+            window.show_all()
 
 
 def update_label_from_script(path, v_box, justify):
@@ -107,19 +127,19 @@ def main():
                        "--script",
                        type=str,
                        default="",
-                       help="Path to the script whose output you want to display")
+                       help="path to the Script whose output you want to display")
 
     group.add_argument("-t",
                        "--text",
                        type=str,
                        default="",
-                       help="Path to the text file you want to display")
+                       help="path to the Text file you want to display")
 
     parser.add_argument("-c",
                         "--css",
                         type=str,
                         default="style.css",
-                        help="Path to the css file")
+                        help="path to the Css file")
 
     parser.add_argument("-o",
                         "--output",
@@ -135,37 +155,55 @@ def main():
     parser.add_argument("-a",
                         "--alignment",
                         type=str,
-                        help="Vertical alignment: \"start\" or \"end\"; \"middle\" if no value given")
+                        help="vertical Alignment: \"start\" or \"end\"; \"middle\" if no value given")
 
     parser.add_argument("-j",
                         "--justify",
                         type=str,
                         default="left",
-                        help="Text justification: \"right\" or \"center\"; \"left\" if no value given")
+                        help="text Justification: \"right\" or \"center\"; \"left\" if no value given")
 
     parser.add_argument("-mt",
                         "--margin_top",
                         type=int,
                         default=0,
-                        help="Top margin")
+                        help="Top Margin")
 
     parser.add_argument("-mb",
                         "--margin_bottom",
                         type=int,
                         default=0,
-                        help="Bottom margin")
+                        help="Bottom Margin")
 
     parser.add_argument("-ml",
                         "--margin_left",
                         type=int,
                         default=0,
-                        help="Left margin")
+                        help="Left Margin")
 
     parser.add_argument("-mr",
                         "--margin_right",
                         type=int,
                         default=0,
-                        help="Right margin")
+                        help="Right Margin")
+
+    parser.add_argument("-l",
+                        "--layer",
+                        type=int,
+                        default=1,
+                        help="initial Layer: 1 for bottom, 2 for top; 1 if no value given")
+
+    parser.add_argument("-sl",
+                        "--sig_layer",
+                        type=int,
+                        default=10,
+                        help="Signal number for Layer switching")
+
+    parser.add_argument("-sv",
+                        "--sig_visibility",
+                        type=int,
+                        default=12,
+                        help="Signal number for toggling Visibility ")
 
     parser.add_argument("-r",
                         "--refresh",
@@ -179,7 +217,11 @@ def main():
                         version="%(prog)s version {}".format(__version__),
                         help="display version information")
 
+    global args
     args = parser.parse_args()
+
+    global layer
+    layer = args.layer
 
     if not args.text and not args.script:
         sys.stderr.write("ERROR: Neither script nor text file specified\n")
@@ -190,10 +232,11 @@ def main():
     # Only if not found
     copy_files(os.path.join(dir_name, "config"), config_dir)
 
+    global window
     window = Gtk.Window()
 
     GtkLayerShell.init_for_window(window)
-    GtkLayerShell.set_layer(window, GtkLayerShell.Layer.BOTTOM)
+    GtkLayerShell.set_layer(window, args.layer)
     GtkLayerShell.set_exclusive_zone(window, 0)
 
     if args.output:
@@ -262,6 +305,10 @@ def main():
 
     if script_path and args.refresh > 0:
         GLib.timeout_add(args.refresh, update_label_from_script, script_path, v_box, args.justify)
+
+    catchable_sigs = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
+    for sig in catchable_sigs:
+        signal.signal(sig, signal_handler)
 
     Gtk.main()
 

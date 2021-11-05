@@ -47,34 +47,67 @@ rm /usr/bin/nwg-wrapper
 $ nwg-wrapper -h
 usage: nwg-wrapper [-h] [-s SCRIPT | -t TEXT] [-c CSS] [-o OUTPUT] [-p POSITION] [-a ALIGNMENT]
                    [-j JUSTIFY] [-mt MARGIN_TOP] [-mb MARGIN_BOTTOM] [-ml MARGIN_LEFT]
-                   [-mr MARGIN_RIGHT] [-r REFRESH] [-v]
+                   [-mr MARGIN_RIGHT] [-l LAYER] [-sl SIG_LAYER] [-sv SIG_VISIBILITY] [-r REFRESH]
+                   [-v]
 
 optional arguments:
   -h, --help            show this help message and exit
   -s SCRIPT, --script SCRIPT
-                        Path to the script whose output you want to display
-  -t TEXT, --text TEXT  Path to the text file you want to display
-  -c CSS, --css CSS     Path to the css file
+                        path to the Script whose output you want to display
+  -t TEXT, --text TEXT  path to the Text file you want to display
+  -c CSS, --css CSS     path to the Css file
   -o OUTPUT, --output OUTPUT
                         Output to place the window on, e.g. "eDP-1"
   -p POSITION, --position POSITION
                         Position: "left" or "right"; "center" if no value given
   -a ALIGNMENT, --alignment ALIGNMENT
-                        Vertical alignment: "start" or "end"; "middle" if no value given
+                        vertical Alignment: "start" or "end"; "middle" if no value given
   -j JUSTIFY, --justify JUSTIFY
-                        Text justification: "right" or "center"; "left" if no value given
+                        text Justification: "right" or "center"; "left" if no value given
   -mt MARGIN_TOP, --margin_top MARGIN_TOP
-                        Top margin
+                        Top Margin
   -mb MARGIN_BOTTOM, --margin_bottom MARGIN_BOTTOM
-                        Bottom margin
+                        Bottom Margin
   -ml MARGIN_LEFT, --margin_left MARGIN_LEFT
-                        Left margin
+                        Left Margin
   -mr MARGIN_RIGHT, --margin_right MARGIN_RIGHT
-                        Right margin
+                        Right Margin
+  -l LAYER, --layer LAYER
+                        initial Layer: 1 for bottom, 2 for top; 1 if no value given
+  -sl SIG_LAYER, --sig_layer SIG_LAYER
+                        Signal number for Layer switching
+  -sv SIG_VISIBILITY, --sig_visibility SIG_VISIBILITY
+                        Signal number for toggling Visibility
   -r REFRESH, --refresh REFRESH
                         Refresh rate in milliseconds; 0 (no refresh) if no value given
   -v, --version         display version information
 ```
+
+### Layers
+
+The window will appear on the top or bottom layer, according to the `-l` | `--layer` argument value (1 for bottom by default).
+You may switch layers by sending `SIGUSR1` [signal](https://man7.org/linux/man-pages/man7/signal.7.html)
+to the `nwg-wrapper` process, e.g. like this:
+
+`pkill -f -10 nwg-wrapper`
+
+or this:
+
+`pkill -f -USR1 nwg-wrapper`
+
+You can choose a different signal number with the `-sl` | `--sig_layer` argument.
+
+### Visibility
+
+The window is visible by default. You can hide / show it by sending `SIGUSR2` signal to the `nwg-wrapper` process:
+
+`pkill -f -12 nwg-wrapper`
+
+or:
+
+`pkill -f -USR2 nwg-wrapper`
+
+You can choose a different signal number with the `-sv | --sig_visibility` argument.
 
 ### Sample usage
 
