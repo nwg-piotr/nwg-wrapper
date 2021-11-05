@@ -32,7 +32,9 @@ from nwg_wrapper.tools import *
 dir_name = os.path.dirname(__file__)
 inner_box_width = 0
 inner_box = Gtk.Box()
+window = None
 layer = 1
+args = None
 
 
 def signal_handler(sig, frame):
@@ -41,13 +43,14 @@ def signal_handler(sig, frame):
         desc = {2: "SIGINT", 15: "SIGTERM"}
         print("Terminated with {}".format(desc[sig]))
         Gtk.main_quit()
-    elif sig == 10:
+    elif sig == args.sig_layer:
         layer = 1 if layer == 2 else 2
-
-
-def switch_layer(window):
-    GtkLayerShell.set_layer(window, layer)
-    return True
+        GtkLayerShell.set_layer(window, layer)
+    elif sig == args.sig_visibility:
+        if window.is_visible():
+            window.hide()
+        else:
+            window.show_all()
 
 
 def update_label_from_script(path, v_box, justify):
@@ -178,17 +181,29 @@ def main():
                         default=0,
                         help="Left margin")
 
+    parser.add_argument("-mr",
+                        "--margin_right",
+                        type=int,
+                        default=0,
+                        help="Right margin")
+
     parser.add_argument("-l",
                         "--layer",
                         type=int,
                         default=1,
                         help="Layer: 1 for bottom, 2 for top")
 
-    parser.add_argument("-mr",
-                        "--margin_right",
+    parser.add_argument("-sl",
+                        "--sig_layer",
                         type=int,
-                        default=0,
-                        help="Right margin")
+                        default=10,
+                        help="Number of signal to switch layers")
+
+    parser.add_argument("-sv",
+                        "--sig_visibility",
+                        type=int,
+                        default=12,
+                        help="Number of signal to switch layers")
 
     parser.add_argument("-r",
                         "--refresh",
@@ -202,6 +217,7 @@ def main():
                         version="%(prog)s version {}".format(__version__),
                         help="display version information")
 
+    global args
     args = parser.parse_args()
 
     global layer
@@ -216,6 +232,7 @@ def main():
     # Only if not found
     copy_files(os.path.join(dir_name, "config"), config_dir)
 
+    global window
     window = Gtk.Window()
 
     GtkLayerShell.init_for_window(window)
@@ -289,11 +306,9 @@ def main():
     if script_path and args.refresh > 0:
         GLib.timeout_add(args.refresh, update_label_from_script, script_path, v_box, args.justify)
 
-    GLib.timeout_add(100, switch_layer, window)
-
-    signal.signal(signal.SIGINT, signal_handler)
-    signal.signal(signal.SIGTERM, signal_handler)
-    signal.signal(signal.SIGUSR1, signal_handler)
+    catchable_sigs = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
+    for sig in catchable_sigs:
+        signal.signal(sig, signal_handler)
 
     Gtk.main()
 
