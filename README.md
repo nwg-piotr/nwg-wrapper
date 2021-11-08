@@ -45,10 +45,9 @@ rm /usr/bin/nwg-wrapper
 
 ```text
 $ nwg-wrapper -h
-usage: nwg-wrapper [-h] [-s SCRIPT | -t TEXT] [-c CSS] [-o OUTPUT] [-p POSITION] [-a ALIGNMENT]
-                   [-j JUSTIFY] [-mt MARGIN_TOP] [-mb MARGIN_BOTTOM] [-ml MARGIN_LEFT]
-                   [-mr MARGIN_RIGHT] [-l LAYER] [-sl SIG_LAYER] [-sv SIG_VISIBILITY] [-r REFRESH]
-                   [-v]
+usage: nwg-wrapper [-h] [-s SCRIPT | -t TEXT] [-c CSS] [-o OUTPUT] [-p POSITION] [-a ALIGNMENT] [-j JUSTIFY]
+                   [-mt MARGIN_TOP] [-mb MARGIN_BOTTOM] [-ml MARGIN_LEFT] [-mr MARGIN_RIGHT] [-l LAYER]
+                   [-sl SIG_LAYER] [-sv SIG_VISIBILITY] [-sq SIG_QUIT] [-r REFRESH] [-v]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -75,9 +74,11 @@ optional arguments:
   -l LAYER, --layer LAYER
                         initial Layer: 1 for bottom, 2 for top; 1 if no value given
   -sl SIG_LAYER, --sig_layer SIG_LAYER
-                        Signal number for Layer switching
+                        Signal number for Layer switching; default: 10
   -sv SIG_VISIBILITY, --sig_visibility SIG_VISIBILITY
-                        Signal number for toggling Visibility
+                        Signal number for toggling Visibility; default: 12
+  -sq SIG_QUIT, --sig_quit SIG_QUIT
+                        custom Signal number to Quit the wrapper instance; default: 2
   -r REFRESH, --refresh REFRESH
                         Refresh rate in milliseconds; 0 (no refresh) if no value given
   -v, --version         display version information
