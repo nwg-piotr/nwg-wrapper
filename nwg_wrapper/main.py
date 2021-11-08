@@ -34,7 +34,7 @@ inner_box_width = 0
 inner_box = Gtk.Box()
 window = None
 layer = 1
-args = None
+args = argparse.Namespace
 
 
 def signal_handler(sig, frame):
@@ -43,8 +43,11 @@ def signal_handler(sig, frame):
         desc = {2: "SIGINT", 15: "SIGTERM"}
         print("Terminated with {}".format(desc[sig]))
         Gtk.main_quit()
+    elif sig == args.sig_quit:
+        print("Terminated with a custom signal ({})".format(sig))
+        Gtk.main_quit()
     elif sig == args.sig_layer:
-        layer = 1 if layer == 2 else 2
+        layer = 1 if layer == args.layer else args.layer
         GtkLayerShell.set_layer(window, layer)
     elif sig == args.sig_visibility:
         if window.is_visible():
@@ -197,13 +200,19 @@ def main():
                         "--sig_layer",
                         type=int,
                         default=10,
-                        help="Signal number for Layer switching")
+                        help="Signal number for Layer switching; default: 10")
 
     parser.add_argument("-sv",
                         "--sig_visibility",
                         type=int,
                         default=12,
-                        help="Signal number for toggling Visibility ")
+                        help="Signal number for toggling Visibility; default: 12")
+
+    parser.add_argument("-sq",
+                        "--sig_quit",
+                        type=int,
+                        default=2,
+                        help="custom Signal number to Quit the wrapper instance; default: 2")
 
     parser.add_argument("-r",
                         "--refresh",
