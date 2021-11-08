@@ -85,9 +85,9 @@ optional arguments:
 
 ### Layers
 
-The window will appear on the top or bottom layer, according to the `-l` | `--layer` argument value (1 for bottom by default).
-You may switch layers by sending `SIGUSR1` [signal](https://man7.org/linux/man-pages/man7/signal.7.html)
-to the `nwg-wrapper` process, e.g. like this:
+The window will appear on the top or bottom layer, according to the `-l` | `--layer` argument value (1 for bottom by 
+default). You may switch between the bottom layer and the layer you selected with the `-l` argument by sending `SIGUSR1` 
+[signal](https://man7.org/linux/man-pages/man7/signal.7.html) to the `nwg-wrapper` process, e.g. like this:
 
 `pkill -f -10 nwg-wrapper`
 
@@ -108,6 +108,20 @@ or:
 `pkill -f -USR2 nwg-wrapper`
 
 You can choose a different signal number with the `-sv | --sig_visibility` argument.
+
+### Custom quit signal
+
+Sometimes you may need to terminate a certain nwg-wrapper instance (see [#5](https://github.com/nwg-piotr/nwg-wrapper/issues/5)).
+You may choose a custom signal with the `-sq` | `--sig_quit` argument.
+
+Sample script to show the wrapper over swaylock and kill it when the screen gets unlocked, w/o killing other instances:
+
+```bash
+#!/bin/bash
+
+nwg-wrapper -s swaylock-time.sh -o eDP-1 -r 1000 -c timezones.css -p right -mr 50 -a start -mt 0 -j right -l 3 -sq 31 &
+sleep 0.5 && swaylock --image '/home/piotr/Obrazy/Wallpapers/wallhaven-zmrdry-1920x1080.jpg' && pkill -f -31 nwg-wrapper
+```
 
 ### Sample usage
 
