@@ -87,7 +87,7 @@ optional arguments:
 ### Layers
 
 The window will appear on the top or bottom layer, according to the `-l` | `--layer` argument value (1 for bottom by 
-default). You may switch between the bottom layer and the layer you selected with the `-l` argument by sending `SIGUSR1` 
+default, 2 for top). You may bring it to the overlay layer (3) and back to the layer you selected by sending `SIGUSR1` 
 [signal](https://man7.org/linux/man-pages/man7/signal.7.html) to the `nwg-wrapper` process, e.g. like this:
 
 `pkill -f -10 nwg-wrapper`

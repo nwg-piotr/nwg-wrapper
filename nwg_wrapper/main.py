@@ -47,7 +47,7 @@ def signal_handler(sig, frame):
         print("Terminated with a custom signal ({})".format(sig))
         Gtk.main_quit()
     elif sig == args.sig_layer:
-        layer = 1 if layer == args.layer else args.layer
+        layer = 3 if layer == args.layer else args.layer
         GtkLayerShell.set_layer(window, layer)
     elif sig == args.sig_visibility:
         if window.is_visible():
