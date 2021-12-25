@@ -301,10 +301,12 @@ def main():
     else:
         outer_box.pack_start(inner_box, True, False, 0)
 
+    global v_box
     v_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
     inner_box.pack_start(v_box, False, False, 0)
 
     # Get data
+    global script_path
     script_path = os.path.join(config_dir, args.script) if args.script else ""
     text_path = os.path.join(config_dir, args.text) if args.text else ""
 
