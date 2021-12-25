@@ -49,6 +49,8 @@ def signal_handler(sig, frame):
     elif sig == args.sig_layer:
         layer = 3 if layer == args.layer else args.layer
         GtkLayerShell.set_layer(window, layer)
+    elif sig == args.sig_refresh:
+        update_label_from_script(script_path, v_box, args.justify)
     elif sig == args.sig_visibility:
         if window.is_visible():
             window.hide()
@@ -213,6 +215,11 @@ def main():
                         type=int,
                         default=2,
                         help="custom Signal number to Quit the wrapper instance; default: 2")
+    parser.add_argument("-sr",
+                        "--sig_refresh",
+                        type=int,
+                        default=8,
+                        help="custom Signal number to refresh the script; default: 8")
 
     parser.add_argument("-r",
                         "--refresh",
