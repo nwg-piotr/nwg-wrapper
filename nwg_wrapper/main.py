@@ -218,7 +218,7 @@ def main():
     parser.add_argument("-sr",
                         "--sig_refresh",
                         type=int,
-                        default=8,
+                        default="99",
                         help="custom Signal number to refresh the script; default: 8")
 
     parser.add_argument("-r",
@@ -262,6 +262,7 @@ def main():
             GtkLayerShell.set_monitor(window, monitor)
         except KeyError:
             print("No such output: {}".format(args.output))
+            return
 
     screen = Gdk.Screen.get_default()
     provider = Gtk.CssProvider()
@@ -313,6 +314,7 @@ def main():
     if script_path:
         r = "refresh rate {} ms".format(args.refresh) if args.refresh else "no refresh"
         print("Using script: {}, {}".format(script_path, r))
+        print("the script path is:", script_path)
         update_label_from_script(script_path, v_box, args.justify)
     elif text_path:
         print("Using text file: {}".format(text_path))
