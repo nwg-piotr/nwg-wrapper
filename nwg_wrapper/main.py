@@ -281,8 +281,14 @@ def main():
         else:
             GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.RIGHT, True)
 
-    GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.TOP, True)
-    GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.BOTTOM, True)
+    if args.alignment == "start" or args.alignment == "end":
+        if args.alignment == "start":
+            GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.TOP, True)
+        else:
+            GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.BOTTOM, True)
+
+    # GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.TOP, True)
+    # GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.BOTTOM, True)
 
     GtkLayerShell.set_margin(window, GtkLayerShell.Edge.TOP, args.margin_top)
     GtkLayerShell.set_margin(window, GtkLayerShell.Edge.BOTTOM, args.margin_bottom)
