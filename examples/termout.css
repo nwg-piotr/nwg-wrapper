@@ -1,0 +1,22 @@
+window {
+        background-color: rgba (0, 0, 0, 0.0);
+}
+
+#box-outer {
+        /* Define attributes of the box surrounding icons here */
+        background-color: rgba (255, 255, 255, 0.0)
+}
+
+#box-inner {
+    /* font-family: "Fixedsys Excelsior MonoLF"; */
+    /* background-color: rgba (23, 53, 63, 0.75); */
+    /* color: #D6E1A5; */
+    padding: 0 20px 0 20px;
+    background-color: rgba (61,76,95, 0.80);
+    border-radius: 16px;
+    padding: 2em 4em;
+    margin: 0px 9px 9px 0px;
+    box-shadow: 0px 3px 5px black
+    /* box-shadow: 0px 8px 38px 8px rgba(0, 0, 0, 0.3); */
+    /* box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22); */ 
+}
