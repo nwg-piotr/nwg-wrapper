@@ -1,0 +1,30 @@
+window {
+    /* background-color: rgba ((61,76,95, 0.9); */
+    background-color: rgba (0, 0, 0, 0.0);
+}
+
+#box-outer {
+    /* Define attributes of the box surrounding icons here */
+    background-color: rgba (255, 255, 255, 0.0)
+}
+
+#box-inner {
+    /* background-color: rgba ((61,76,95, 0.9); */
+    /* background-color: rgba (255, 255, 255, 1.0); */
+    /* border-width: 4px; */
+    /* box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3) 0 15px 12px rgba(0, 0, 0, 0.22); */ 
+
+    /* border-radius: 8px; */
+    /* border-color: rgba (156, 142, 122, 1.0); */
+    /* padding: 2px 2px; */
+    /* box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22); */ 
+    /* background-color: rgba (23, 53, 63, 0.75); */
+    background-color: rgba (61,76,95, 0.40);
+    border-radius: 6px;
+    margin: 0px 9px 9px 0px;
+    padding: 6px;
+    /* box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22); */ 
+    box-shadow: 0px 3px 5px black
+
+}
+
