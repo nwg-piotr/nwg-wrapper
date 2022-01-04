@@ -47,7 +47,7 @@ def signal_handler(sig, frame):
         print("Terminated with a custom signal ({})".format(sig))
         Gtk.main_quit()
     elif sig == args.sig_layer:
-        layer = 3 if layer == args.layer else args.layer
+        layer = 2 if layer == 1 else 1
         GtkLayerShell.set_layer(window, layer)
     elif sig == args.sig_refresh:
         update_label_from_script(script_path, v_box, args.justify)
@@ -287,9 +287,6 @@ def main():
         else:
             GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.BOTTOM, True)
 
-    # GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.TOP, True)
-    # GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.BOTTOM, True)
-
     GtkLayerShell.set_margin(window, GtkLayerShell.Edge.TOP, args.margin_top)
     GtkLayerShell.set_margin(window, GtkLayerShell.Edge.BOTTOM, args.margin_bottom)
     GtkLayerShell.set_margin(window, GtkLayerShell.Edge.LEFT, args.margin_left)
@@ -320,7 +317,6 @@ def main():
     if script_path:
         r = "refresh rate {} ms".format(args.refresh) if args.refresh else "no refresh"
         print("Using script: {}, {}".format(script_path, r))
-        print("the script path is:", script_path)
         update_label_from_script(script_path, v_box, args.justify)
     elif text_path:
         print("Using text file: {}".format(text_path))
