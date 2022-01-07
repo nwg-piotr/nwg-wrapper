@@ -49,6 +49,36 @@ def is_command(cmd):
         return False
 
 
+def temp_dir():
+    if os.getenv("TMPDIR"):
+        return os.getenv("TMPDIR")
+    elif os.getenv("TEMP"):
+        return os.getenv("TEMP")
+    elif os.getenv("TMP"):
+        return os.getenv("TMP")
+
+    return "/tmp"
+
+
+def load_text_file(path):
+    try:
+        with open(path, 'r') as file:
+            data = file.read()
+            return data
+    except Exception as e:
+        print(e)
+        return None
+
+
+def save_string(string, file):
+    try:
+        file = open(file, "wt")
+        file.write(string)
+        file.close()
+    except:
+        print("Error writing file '{}'".format(file))
+
+
 def list_outputs():
     """
     Get output names and geometry from i3 tree, assign to Gdk.Display monitors.

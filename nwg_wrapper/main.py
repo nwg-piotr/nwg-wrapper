@@ -198,6 +198,11 @@ def main():
                         default=1,
                         help="initial Layer: 1 for bottom, 2 for top; 1 if no value given")
 
+    parser.add_argument("-si",
+                        "--single_instance",
+                        action="store_true",
+                        help="allow just Single program Instance")
+
     parser.add_argument("-sl",
                         "--sig_layer",
                         type=int,
@@ -235,6 +240,18 @@ def main():
 
     global args
     args = parser.parse_args()
+
+    if args.single_instance:
+        # Try and kill already running instance if any
+        pid_file = os.path.join(temp_dir(), "nwg-wrapper.pid")
+        if os.path.isfile(pid_file):
+            try:
+                pid = int(load_text_file(pid_file))
+                os.kill(pid, signal.SIGINT)
+                print("Running instance killed, PID {}".format(pid))
+            except:
+                pass
+        save_string(str(os.getpid()), pid_file)
 
     global layer
     layer = args.layer
