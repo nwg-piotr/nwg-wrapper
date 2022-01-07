@@ -2,7 +2,7 @@
 
 """
 Wrapper to display a script output or a text file content on the desktop in sway or other wlroots-based compositors
-Author: Piotr Miller
+Copyright (c) 2021-2022 Piotr Miller & Contributors
 e-mail: nwg.piotr@gmail.com
 Project: https://github.com/nwg-piotr/nwg-wratter
 License: MIT
