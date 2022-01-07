@@ -49,6 +49,8 @@ def signal_handler(sig, frame):
     elif sig == args.sig_layer:
         layer = 2 if layer == 1 else 1
         GtkLayerShell.set_layer(window, layer)
+    elif sig == args.sig_refresh:
+        update_label_from_script(script_path, v_box, args.justify)
     elif sig == args.sig_visibility:
         if window.is_visible():
             window.hide()
@@ -213,6 +215,11 @@ def main():
                         type=int,
                         default=2,
                         help="custom Signal number to Quit the wrapper instance; default: 2")
+    parser.add_argument("-sr",
+                        "--sig_refresh",
+                        type=int,
+                        default="99",
+                        help="custom Signal number to refresh the script; default: 8")
 
     parser.add_argument("-r",
                         "--refresh",
@@ -255,6 +262,7 @@ def main():
             GtkLayerShell.set_monitor(window, monitor)
         except KeyError:
             print("No such output: {}".format(args.output))
+            return
 
     screen = Gdk.Screen.get_default()
     provider = Gtk.CssProvider()
@@ -273,8 +281,11 @@ def main():
         else:
             GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.RIGHT, True)
 
-    GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.TOP, True)
-    GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.BOTTOM, True)
+    if args.alignment == "start" or args.alignment == "end":
+        if args.alignment == "start":
+            GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.TOP, True)
+        else:
+            GtkLayerShell.set_anchor(window, GtkLayerShell.Edge.BOTTOM, True)
 
     GtkLayerShell.set_margin(window, GtkLayerShell.Edge.TOP, args.margin_top)
     GtkLayerShell.set_margin(window, GtkLayerShell.Edge.BOTTOM, args.margin_bottom)
@@ -294,10 +305,12 @@ def main():
     else:
         outer_box.pack_start(inner_box, True, False, 0)
 
+    global v_box
     v_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
     inner_box.pack_start(v_box, False, False, 0)
 
     # Get data
+    global script_path
     script_path = os.path.join(config_dir, args.script) if args.script else ""
     text_path = os.path.join(config_dir, args.text) if args.text else ""
 
