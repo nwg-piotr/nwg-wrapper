@@ -45,11 +45,10 @@ rm /usr/bin/nwg-wrapper
 
 ```text
 $ nwg-wrapper -h
-usage: nwg-wrapper [-h] [-s SCRIPT | -t TEXT] [-c CSS] [-o OUTPUT] [-p POSITION] [-a ALIGNMENT] [-j JUSTIFY]
-                   [-mt MARGIN_TOP] [-mb MARGIN_BOTTOM] [-ml MARGIN_LEFT] [-mr MARGIN_RIGHT] [-l LAYER]
-                   [-sl SIG_LAYER] [-sv SIG_VISIBILITY] [-sq SIG_QUIT] [-r REFRESH] [-v]
+usage: nwg-wrapper [-h] [-s SCRIPT | -t TEXT] [-c CSS] [-o OUTPUT] [-p POSITION] [-a ALIGNMENT] [-j JUSTIFY] [-mt MARGIN_TOP] [-mb MARGIN_BOTTOM] [-ml MARGIN_LEFT] [-mr MARGIN_RIGHT]
+                   [-l LAYER] [-si] [-sl SIG_LAYER] [-sv SIG_VISIBILITY] [-sq SIG_QUIT] [-sr SIG_REFRESH] [-r REFRESH] [-v]
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -s SCRIPT, --script SCRIPT
                         path to the Script whose output you want to display
@@ -73,12 +72,16 @@ optional arguments:
                         Right Margin
   -l LAYER, --layer LAYER
                         initial Layer: 1 for bottom, 2 for top; 1 if no value given
+  -si, --single_instance
+                        allow just Single program Instance
   -sl SIG_LAYER, --sig_layer SIG_LAYER
                         Signal number for Layer switching; default: 10
   -sv SIG_VISIBILITY, --sig_visibility SIG_VISIBILITY
                         Signal number for toggling Visibility; default: 12
   -sq SIG_QUIT, --sig_quit SIG_QUIT
                         custom Signal number to Quit the wrapper instance; default: 2
+  -sr SIG_REFRESH, --sig_refresh SIG_REFRESH
+                        custom Signal number to refresh the script; default: 8
   -r REFRESH, --refresh REFRESH
                         Refresh rate in milliseconds; 0 (no refresh) if no value given
   -v, --version         display version information
@@ -123,6 +126,12 @@ Sample script to show the wrapper over swaylock and kill it when the screen gets
 nwg-wrapper -s swaylock-time.sh -o eDP-1 -r 1000 -c timezones.css -p right -mr 50 -a start -mt 0 -j right -l 3 -sq 31 &
 sleep 0.5 && swaylock --image '/home/piotr/Obrazy/Wallpapers/wallhaven-zmrdry-1920x1080.jpg' && pkill -f -31 nwg-wrapper
 ```
+
+### Single instance mode
+
+With the `-si` | `--single_instance` argument you may force single instance mode. The program on startup 
+checks the pid file stored in `/tmp/nwg-wrapper.pid` and kills the appropriate process when started again. 
+You can use this only once, as always the same file is used. 
 
 ### Sample usage
 
