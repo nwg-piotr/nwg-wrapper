@@ -110,6 +110,8 @@ or:
 
 You can choose a different signal number with the `-sv | --sig_visibility` argument.
 
+Also, you can hide it on start with `-i` | `--invisible` argument and then show and hide it, using your specified or `USR2` signal.
+
 ### Custom quit signal
 
 Sometimes you may need to terminate a certain nwg-wrapper instance (see [#5](https://github.com/nwg-piotr/nwg-wrapper/issues/5)).
