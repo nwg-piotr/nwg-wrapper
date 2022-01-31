@@ -198,6 +198,12 @@ def main():
                         default=1,
                         help="initial Layer: 1 for bottom, 2 for top; 1 if no value given")
 
+    parser.add_argument("-i",
+                        "--invisible",
+                        default=False,
+                        action=argparse.BooleanOptionalAction,
+                        help="Make this instance of wrapper invisible on launch")
+
     parser.add_argument("-si",
                         "--single_instance",
                         action="store_true",
@@ -339,7 +345,9 @@ def main():
         print("Using text file: {}".format(text_path))
         build_from_text(text_path, v_box, args.justify)
 
-    window.show_all()
+    if not args.invisible: 
+        window.show_all()
+
     window.connect('destroy', Gtk.main_quit)
 
     if script_path and args.refresh > 0:
