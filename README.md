@@ -73,6 +73,8 @@ optional arguments:
                         Right Margin
   -l LAYER, --layer LAYER
                         initial Layer: 1 for bottom, 2 for top; 1 if no value given
+  -i, --invisible
+                        Make this instance of wrapper invisible on launch
   -sl SIG_LAYER, --sig_layer SIG_LAYER
                         Signal number for Layer switching; default: 10
   -sv SIG_VISIBILITY, --sig_visibility SIG_VISIBILITY
