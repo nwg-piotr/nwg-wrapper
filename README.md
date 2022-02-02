@@ -132,15 +132,15 @@ sleep 0.5 && swaylock --image '/home/piotr/Obrazy/Wallpapers/wallhaven-zmrdry-19
 
 `nwg-wrapper -s date-wttr.sh -r 1800000 -c date-wttr.css -p left -ml 200`
 
-![2021-07-10-050045_screenshot.png](https://scrot.cloud/images/2021/07/10/2021-07-10-050045_screenshot.png)
+![screenshot-1.png](https://github.com/nwg-piotr/nwg-shell/blob/main/images/nwg-wrapper/timezones.png)
 
 `nwg-wrapper -t bindings.pango -c bindings.css -p left -ml 200`
 
-![2021-07-11-003357_screenshot.png](https://scrot.cloud/images/2021/07/11/2021-07-11-003357_screenshot.png)
+![screenshot-2.png](https://raw.githubusercontent.com/nwg-piotr/nwg-shell/main/images/nwg-wrapper/weather.png)
 
 `nwg-wrapper -s timezones.sh -r 1000 -c timezones.css -p right -mr 50 -a start -mt 50 -j right`
 
-![2021-07-10-050810_screenshot.png](https://scrot.cloud/images/2021/07/10/2021-07-10-050810_screenshot.png)
+![screenshot-3.png](https://raw.githubusercontent.com/nwg-piotr/nwg-shell/main/images/nwg-wrapper/bindings.png)
 
 ## (Very basic) image support
 
