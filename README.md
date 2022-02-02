@@ -155,6 +155,6 @@ Syntax:
 The line is being parsed in the simplest possible way. Spaces are delimiters, so do not use them inside the fields.
 It also applies to the file path.
 
-See the [example script](https://github.com/nwg-piotr/nwg-wrapper/blob/img/examples/cowsay.py), and the result below.
+See the [example script](https://github.com/nwg-piotr/nwg-wrapper/blob/master/examples/cowsay.py), and the result below.
 
-![cowsay.png](https://scrot.cloud/images/2021/07/17/cowsay.png)
+![cowsay.png](https://raw.githubusercontent.com/nwg-piotr/nwg-shell/main/images/nwg-wrapper/cowsay.png)
