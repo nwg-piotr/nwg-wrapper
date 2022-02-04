@@ -132,15 +132,15 @@ sleep 0.5 && swaylock --image '/home/piotr/Obrazy/Wallpapers/wallhaven-zmrdry-19
 
 `nwg-wrapper -s date-wttr.sh -r 1800000 -c date-wttr.css -p left -ml 200`
 
-![screenshot-1.png](https://github.com/nwg-piotr/nwg-shell/blob/main/images/nwg-wrapper/timezones.png)
+![screenshot-1.png](https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-wrapper/timezones.png)
 
 `nwg-wrapper -t bindings.pango -c bindings.css -p left -ml 200`
 
-![screenshot-2.png](https://raw.githubusercontent.com/nwg-piotr/nwg-shell/main/images/nwg-wrapper/weather.png)
+![screenshot-2.png](https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-wrapper/weather.png)
 
 `nwg-wrapper -s timezones.sh -r 1000 -c timezones.css -p right -mr 50 -a start -mt 50 -j right`
 
-![screenshot-3.png](https://raw.githubusercontent.com/nwg-piotr/nwg-shell/main/images/nwg-wrapper/bindings.png)
+![screenshot-3.png](https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-wrapper/bindings.png)
 
 ## (Very basic) image support
 
@@ -157,4 +157,4 @@ It also applies to the file path.
 
 See the [example script](https://github.com/nwg-piotr/nwg-wrapper/blob/master/examples/cowsay.py), and the result below.
 
-![cowsay.png](https://raw.githubusercontent.com/nwg-piotr/nwg-shell/main/images/nwg-wrapper/cowsay.png)
+![cowsay.png](https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-wrapper/cowsay.png)
