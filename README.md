@@ -128,6 +128,9 @@ nwg-wrapper -s swaylock-time.sh -o eDP-1 -r 1000 -c timezones.css -p right -mr 5
 sleep 0.5 && swaylock --image '/home/piotr/Obrazy/Wallpapers/wallhaven-zmrdry-1920x1080.jpg' && pkill -f -31 nwg-wrapper
 ```
 
+*Note: You may need a different `sleep` value on various machines, e.g. `sleep 1`. 
+See: https://github.com/nwg-piotr/nwg-wrapper/issues/19*
+
 ### Sample usage
 
 `nwg-wrapper -s date-wttr.sh -r 1800000 -c date-wttr.css -p left -ml 200`
