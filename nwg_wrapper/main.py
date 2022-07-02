@@ -196,7 +196,7 @@ def main():
                         "--layer",
                         type=int,
                         default=1,
-                        help="initial Layer: 1 for bottom, 2 for top; 1 if no value given")
+                        help="initial Layer: 1 for bottom, 2 for top, 3 for overlay; 1 if no value given")
 
     parser.add_argument("-i",
                         "--invisible",
