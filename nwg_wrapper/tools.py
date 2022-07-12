@@ -3,6 +3,7 @@
 import os
 import sys
 import subprocess
+import shlex
 from shutil import copy2
 
 import gi
@@ -190,10 +191,8 @@ def parse_image(string):
     width = 30
     height = 30
     align = ""
-    lines = string.split()
+    lines = shlex.split(string)
     for line in lines:
-        line = line.replace('"', '')
-        line = line.replace("'", '')
         if '=' in line:
             if 'path' in line:
                 path = line.split('=')[1]
