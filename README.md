@@ -153,10 +153,7 @@ needs to be divided into more Gtk.Label widgets. Remember to close all Pango tag
 
 Syntax:
 
-`#img path=/full/image/path width=int height=int align=string` [start (default) | center | end]
-
-The line is being parsed in the simplest possible way. Spaces are delimiters, so do not use them inside the fields.
-It also applies to the file path.
+`#img path='/full/path/to/your image.png' width=int height=int align=string` [start (default) | center | end]
 
 See the [example script](https://github.com/nwg-piotr/nwg-wrapper/blob/master/examples/cowsay.py), and the result below.
 
