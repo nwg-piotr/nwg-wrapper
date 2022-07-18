@@ -35,7 +35,7 @@ sudo python3 setup.py install --optimize=1
 ## To uninstall
 
 ```text
-rm -r /usr/lib/python3.9/site-packages/nwg_wrapper*
+rm -r /usr/lib/python3.*/site-packages/nwg_wrapper*
 rm /usr/bin/nwg-wrapper
 ```
 
