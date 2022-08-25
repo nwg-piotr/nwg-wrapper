@@ -229,7 +229,7 @@ def main():
     parser.add_argument("-sr",
                         "--sig_refresh",
                         type=int,
-                        default="99",
+                        default="8",
                         help="custom Signal number to refresh the script; default: 8")
 
     parser.add_argument("-r",
