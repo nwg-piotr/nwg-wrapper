@@ -237,7 +237,7 @@ def main():
                         "--sig_refresh_delay",
                         type=int,
                         default=0,
-                        help="custom delay before acting on refresh signal in seconds; default: 0"
+                        help="custom delay before acting on refresh signal in seconds; default: 0")
 
     parser.add_argument("-r",
                         "--refresh",
