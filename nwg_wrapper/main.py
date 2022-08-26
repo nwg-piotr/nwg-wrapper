@@ -11,6 +11,7 @@ License: MIT
 import argparse
 import sys
 import signal
+from time import sleep
 
 from nwg_wrapper.__about__ import __version__
 
