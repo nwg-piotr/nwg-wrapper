@@ -11,6 +11,7 @@ License: MIT
 import argparse
 import sys
 import signal
+from time import sleep
 
 from nwg_wrapper.__about__ import __version__
 
@@ -50,6 +51,7 @@ def signal_handler(sig, frame):
         layer = args.layer if layer == 3 else 3
         GtkLayerShell.set_layer(window, layer)
     elif sig == args.sig_refresh:
+        sleep(args.sig_refresh_delay)
         update_label_from_script(script_path, v_box, args.justify)
     elif sig == args.sig_visibility:
         if window.is_visible():
@@ -229,8 +231,14 @@ def main():
     parser.add_argument("-sr",
                         "--sig_refresh",
                         type=int,
-                        default="99",
+                        default=8,
                         help="custom Signal number to refresh the script; default: 8")
+    
+    parser.add_argument("-srd",
+                        "--sig_refresh_delay",
+                        type=int,
+                        default=0,
+                        help="custom delay before acting on refresh signal in seconds; default: 0")
 
     parser.add_argument("-r",
                         "--refresh",
