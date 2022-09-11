@@ -8,7 +8,7 @@ def read(f_name):
 
 setup(
     name='nwg-wrapper',
-    version='0.1.2',
+    version='0.1.3',
     description='Wrapper to display script output or text file content on desktop in wlroots-based compositors',
     packages=find_packages(),
     include_package_data=True,
