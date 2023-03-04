@@ -64,7 +64,7 @@ def update_label_from_script(path, v_box, justify):
     for item in v_box.get_children():
         item.destroy()
     try:
-        output = subprocess.check_output(path).decode("utf-8")[:-1]
+        output = subprocess.check_output(path, shell=True).decode("utf-8")[:-1]
     except Exception as e:
         output = '<span size="large" foreground="#ff0000">\nERROR:</span>\n\n<i>{}</i> '.format(e)
         sys.stderr.write("{}\n".format(e))
