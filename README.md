@@ -1,5 +1,8 @@
 # nwg-wrapper
 
+*This program was written at the request of a single sway user and is not under active development. Personally, I don't see a use for it along with 
+tiling window managers. Please do not request new features.*
+
 This program is a GTK3-based wrapper to display a script output, or a text file content on the desktop in sway or 
 other wlroots-based compositors. It uses the [gtk-layer-shell](https://github.com/wmww/gtk-layer-shell) library
 to place the window on the bottom layer.
