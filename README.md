@@ -159,3 +159,45 @@ Syntax:
 See the [example script](https://github.com/nwg-piotr/nwg-wrapper/blob/master/examples/cowsay.py), and the result below.
 
 ![cowsay.png](https://raw.githubusercontent.com/nwg-piotr/nwg-shell-resources/master/images/nwg-wrapper/cowsay.png)
+
+## Time synchronisation
+
+To ensure nwg-wrapper is correctly synchronised with the time, one can use a
+systemd timer unit to refresh nwg-wrapper every minute on the minute. This
+method does not require refreshing nwg-wrapper once a second, and thus saves
+power (see [#31](https://github.com/nwg-piotr/nwg-wrapper/issues/31)).
+
+First create a systemd user timer file at `~/.config/systemd/user/nwg-wrapper.timer`.
+
+```
+[Unit]
+Description=nwg-wrapper timer
+
+[Timer]
+OnCalendar=*-*-* *:*:00
+
+[Install]
+WantedBy=timers.target
+```
+
+Then create a systemd user unit file at `~/.config/systemd/user/nwg-wrapper.service`.
+
+```
+[Unit]
+Description=nwg-wrapper update
+
+[Service]
+Type=oneshot
+StandardOutput=journal
+ExecStart=/usr/bin/pkill -8 nwg-wrapper
+```
+
+of course if you invoke `nwg-wrapper` with `--sig_refresh <n>`, ensure you change the signal value in the `.service` file (8) to n.
+
+Finally, enable the `.timer` file
+
+```
+systemctl --user enable --now
+```
+
+If `nwg-wrapper` is running, it will be updated every minute on the minute. (It is still required to manually start nwg-wrapper).
