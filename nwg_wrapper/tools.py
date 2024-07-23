@@ -113,6 +113,8 @@ def list_outputs():
                 for line in lines:
                     if not line.startswith(" "):
                         name = line.split()[0]
+                    elif "Model" in line:
+                        model = line.split()[1]
                     elif "current" in line:
                         w_h = line.split()[0].split('x')
                         w = int(w_h[0])
@@ -123,6 +125,7 @@ def list_outputs():
                         y = int(x_y[1])
                         if name is not None and w is not None and h is not None and x is not None and y is not None:
                             outputs_dict[name] = {'name': name,
+                                                  'model': model,
                                                   'x': x,
                                                   'y': y,
                                                   'width': w,
@@ -135,9 +138,10 @@ def list_outputs():
     for i in range(display.get_n_monitors()):
         monitor = display.get_monitor(i)
         geometry = monitor.get_geometry()
+        model = monitor.get_model()
 
         for key in outputs_dict:
-            if int(outputs_dict[key]["x"]) == geometry.x and int(outputs_dict[key]["y"]) == geometry.y:
+            if outputs_dict[key]["model"] == model:
                 outputs_dict[key]["monitor"] = monitor
 
     return outputs_dict
